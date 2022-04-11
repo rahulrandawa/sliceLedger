@@ -7,8 +7,8 @@ import Login_img from '../assets/images/login.png'
 import validate from '../validation/ForgetPassword'
 import { ForgetPasswordForm } from '../Form'
 import myContext from '../context/MyContext'
-import {toastr} from 'react-redux-toastr'
 import { decryptData } from '../Helper'
+import { toast } from 'react-toastify';
 
 export default function ForgetPassword() {
     const data = useContext(myContext);
@@ -36,11 +36,16 @@ export default function ForgetPassword() {
       .then(response => response.json())
       .then(response => {
         const res  = decryptData(response)
-        const email = res.result.email;
-        sessionStorage.setItem("email", email);
-        data.setLoginapi(res)
-        toastr.success(res.message)
-        History('/Reset-Password');
+        if (parseInt(res.status) == 200) {
+            const email = res.result.email;
+            sessionStorage.setItem("email", email);
+            data.setLoginapi(res)
+            toast.success(res.message)
+            History('/Reset-Password');
+        } else {
+            toast.error(res.message)
+        }
+        
       })
       .catch(err => {
         console.log(err);
@@ -97,6 +102,8 @@ export default function ForgetPassword() {
                                             <span className="error invalid-feedback">{errors.cpassword}</span>
                                         )}
                                         <input type="submit" value="Continue" />
+                                        <div>
+                                      </div>
                                     </form>
                                 </div>
                                 {/* <div className='slice_forgetPassword_form_foot'>

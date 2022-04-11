@@ -8,8 +8,8 @@ import validate from '../validation/VerifyOtp'
 import Login_img from '../assets/images/login.png'
 import { decryptData } from '../Helper'
 import { ResetPForm } from '../Form'
-import {toastr} from 'react-redux-toastr'
 import axios from 'axios'
+import { toast } from 'react-toastify';
 
 export default function ResetPassword() {
     const data = useContext(myContext);
@@ -42,9 +42,13 @@ export default function ResetPassword() {
           .then(response => response.json())
           .then(response => {
             const res  = decryptData(response)
-            sessionStorage.clear()
-            toastr.success(res.message)
-            History('/login');
+            if (parseInt(res.status) == 200) {
+                sessionStorage.clear()
+                toast.success(res.message)
+                History('/login');
+            }else{
+                toast.error(res.message)
+            }
           })
           .catch(err => {
             console.log(err);

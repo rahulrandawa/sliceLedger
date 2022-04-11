@@ -1,5 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './assets/style/main.scss';
 // import Footer from './common/Footer';
@@ -26,17 +25,8 @@ import FiatWallet from './dashboard/wallet/FiatWallet';
 import SliceWallet from './dashboard/wallet/SliceWallet';
 import PaymentMethod from './dashboard/wallet/PaymentMethod';
 import Data from './context/Data';
-import {createStore, combineReducers} from 'redux'
-import {reducer as toastrReducer} from 'react-redux-toastr'
-import {Provider}  from 'react-redux'
-import ReduxToastr from 'react-redux-toastr'
-// import './assets/style/style.css';
-const reducers = {
-  // ... other reducers ...
-  toastr: toastrReducer // <- Mounted at toastr.
-}
-const reducer = combineReducers(reducers)
-const store = createStore(reducer)
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 
@@ -73,19 +63,18 @@ function App() {
       </Routes>
       </Data>
       </BrowserRouter>
-<Provider store={store}>
-  <div>
-    <ReduxToastr
-    timeOut={3000}
-    newestOnTop={true}
-    preventDuplicates
-    position="top-left"
-    getState={(state) => state.toastr} // This is the default
-    transitionIn="fadeIn"
-    transitionOut="fadeOut"
-    closeOnToastrClick/>
-  </div>
-</Provider>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='colored'
+      />
     </>
   );
 }

@@ -6,8 +6,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import Login_img from '../assets/images/login.png'
 import validate from '../validation/SignUp';
 import { decryptData } from '../Helper'
-import {toastr} from 'react-redux-toastr'
 import { SignUpForm } from '../Form'
+import { toast } from 'react-toastify';
 
 export default function SignUp() {
 
@@ -33,7 +33,6 @@ export default function SignUp() {
           .then(response => response.json())
           .then(response => {
             const data  = decryptData(response)
-            toastr.success(response.message)
             setCountry(data.result);
           })
           .catch(err => {
@@ -62,8 +61,13 @@ function SignUp() {
       .then(response => response.json())
       .then(response => {
         const res  = decryptData(response)
-        console.log(res)
-        History('/login');
+        if (parseInt(res.status) == 200) {
+            
+            toast.success(res.message)
+            History('/login');
+        }else{
+            toast.error(res.message)
+        }
       })
       .catch(err => {
         console.log(err);

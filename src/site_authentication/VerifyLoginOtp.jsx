@@ -8,10 +8,12 @@ import validate from '../validation/VerifyOtp'
 import Login_img from '../assets/images/login.png'
 import { decryptData } from '../Helper'
 import { LoginOtpForm } from '../Form'
+import { toast } from 'react-toastify';
 import axios from 'axios'
 
 export default function VerifyLoginOtp() {
     const data = useContext(myContext);
+    let History = useNavigate()
     const [ipAddress, setIP] = useState('');
     const userEmail = window.sessionStorage.getItem("email");
 
@@ -50,6 +52,15 @@ export default function VerifyLoginOtp() {
           .then(response => response.json())
           .then(response => {
             const res  = decryptData(response)
+
+            if (parseInt(res.status) == 200) {
+                toast.success(res.message)
+                History('/dashboard');
+
+            }else{
+                toast.error(res.message)
+            }
+            
           })
           .catch(err => {
             console.log(err);

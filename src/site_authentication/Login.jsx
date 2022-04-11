@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import Login_img from '../assets/images/login.png'
 import { decryptData } from '../Helper'
 import { LoginForm } from '../Form'
-import {toastr} from 'react-redux-toastr'
+import { toast } from 'react-toastify';
 
 export default function Login() {
     // ============================ Hide and Show Password Start ================================
@@ -42,11 +42,17 @@ export default function Login() {
       .then(response => response.json())
       .then(response => {
         const res  = decryptData(response)
-        const email = res.result.email;
-        sessionStorage.setItem("email", email);
-        data.setLoginapi(res)
-        toastr.success(res.message)
-        History('/verify-otp');
+
+        if (parseInt(res.status) == 200) {
+            const email = res.result.email;
+            sessionStorage.setItem("email", email);
+            data.setLoginapi(res)
+            toast.success(res.message)
+            History('/verify-otp');
+        }else{
+            toast.error(res.message)
+        }
+
       })
       .catch(err => {
         console.log(err);
