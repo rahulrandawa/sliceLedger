@@ -1,0 +1,59 @@
+.slice_withdrawal_section {
+    text-align: center;
+    padding: 20px;
+    background: #f7f9fc;
+
+    .withdrawal_Head {
+        font-weight: bold;
+    }
+
+    .withdrawal_Balance {
+        font-weight: bold;
+        color: #808a9d;
+        font-size: 1.2em;
+        margin: 20px 0px;
+    }
+
+    .withdrawal_account_details {
+        display: flex;
+        justify-content: center;
+        text-align: left;
+        font-size: 12px;
+        margin: 20px 0px;
+    }
+
+    .withdrawal_amount {
+        .withdrawal_amount_text {
+            font-weight: bold;
+            letter-spacing: 0px;
+            margin-bottom: 5px;
+        }
+
+        .withdrawal_amount_input {
+            display: flex;
+            justify-content: center;
+
+            input {
+                padding: 2px 15px;
+
+                &::-webkit-inner-spin-button {
+                    display: none;
+                }
+            }
+                .btn-success{
+                    background-color: #08c18d;
+                    border-color: #08c18d;
+
+                    &:hover{
+                        background-color: #08c18d !important;
+                        border-color: #08c18d !important;
+                    }
+
+                    &:focus{
+                        box-shadow: 0 0 0 0.25rem rgb(38 224 138 / 50%);
+                    }
+                }
+           
+        }
+    }
+}

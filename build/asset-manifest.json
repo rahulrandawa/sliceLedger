@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "./static/css/main.0c32dcbf.css",
+    "main.js": "./static/js/main.948dbc4c.js",
+    "static/media/login.png": "./static/media/login.c091be0349dedc21484c.png",
+    "static/media/coin.png": "./static/media/coin.67c58c45ca076a561b67.png",
+    "static/media/service-bg.jpg": "./static/media/service-bg.0a2e5196b9e357038266.jpg",
+    "static/media/roadmap.jpg": "./static/media/roadmap.c211d77d6116376b6606.jpg",
+    "static/media/hero.webp": "./static/media/hero.cc363c22e6e205ffbc36.webp",
+    "static/media/member.png": "./static/media/member.ce6ee6c217f1563e7ef7.png",
+    "static/media/about.webp": "./static/media/about.7e77e6a8ba03e50d838f.webp",
+    "static/media/razorpay.png": "./static/media/razorpay.40ca669d2daef83f7810.png",
+    "static/media/tokenomics_graph.webp": "./static/media/tokenomics_graph.9bc472b297995dd0e6e1.webp",
+    "static/media/bank.jpg": "./static/media/bank.ce2e487ea549890e6f60.jpg",
+    "static/media/bestSecurity.webp": "./static/media/bestSecurity.9aae3e2f1fc04dd64c67.webp",
+    "static/media/marketActivity.webp": "./static/media/marketActivity.c4468ffb08cb97338a9f.webp",
+    "index.html": "./index.html",
+    "static/media/down-arrow.svg": "./static/media/down-arrow.3078152d8defc1071288.svg",
+    "main.0c32dcbf.css.map": "./static/css/main.0c32dcbf.css.map",
+    "main.948dbc4c.js.map": "./static/js/main.948dbc4c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0c32dcbf.css",
+    "static/js/main.948dbc4c.js"
+  ]
+}

@@ -1,0 +1,62 @@
+@import "../../utility/colors.scss";
+
+.slice_user_profileHome_section {
+    // float: left;
+    // width: 80%;
+    height: calc(100vh - 70px);
+    overflow-y: scroll;
+
+    .user_profileHome_container {
+        padding: 20px;
+        box-shadow: 0px 0px 15px 10px rgb(145 147 149 / 30%);
+        border-radius: 8px;
+        margin: 40px 0px;
+    }
+
+
+        .userProfile_img{
+            display: flex;
+            align-content: center;
+            justify-content: center;
+        }
+        .userProfile_img img{
+            width: 150px;
+            height: 150px;
+            border: 2px solid whitesmoke;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+       .personal_section{
+           .person_details{
+               margin-top: 20px;
+                .title{
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+                .text{
+                    font-size: 14px;
+                }
+           }
+       }
+       .account_section{
+           margin-top: 20px;
+        .account_details{
+        
+            margin-top: 20px;
+
+            .color{
+                color: #16C784;
+                font-weight: 500;
+                font-size: 16px !important;
+            }
+             .title{
+                 font-size: 14px;
+                 font-weight: 500;
+             }
+             .text{
+                 font-size: 14px;
+             }
+        }
+    }
+    
+}

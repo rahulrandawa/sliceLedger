@@ -1,0 +1,273 @@
+.fiat_wallet_section{
+    float: left;
+    width: 80%;
+    height: calc(100vh - 70px);
+    overflow-y: scroll;
+
+    .fiat_content{
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0px 0px 10px 0px rgb(0 0 0 / 10%);
+
+    .flat_wallet_total_balance{
+        margin-top: 20px;
+        margin-bottom: 13px;
+
+        .flat_wallet_total_title{
+            display: flex;
+
+            svg{
+                font-size: 1.5em;
+                margin:0px 5px 1px 1px;
+                // color: #596882;
+            }
+
+            h6{
+                letter-spacing: 0px;
+                // color: #596882;
+                font-size: 17px;
+            }
+        }
+
+        .flat_wallet_total_value{
+            margin-left: 32px;
+
+            h6{
+                letter-spacing: 0px;
+                margin-bottom: 0px;
+                font-weight: 500;
+                // color: #808a9d;
+                font-size: 17px;
+            }
+
+            .flat_wallet_total_value_text{
+                font-weight: bold;
+                // color: #808a9d;
+                font-size: 12px;
+            }
+        }
+    }
+    }
+    
+.slice_withdrawal_content{
+    margin: 15px 0px;
+    padding: 20px;
+    border: 1px solid #f9f6f6;
+
+        .withdrawal_title{
+            h6{
+                color: #5358cc;
+            }
+        }
+
+        .slice_withdrawal_section {
+            padding: 30px;
+            text-align: center;
+      
+        
+            .withdrawal_Head {
+                font-weight: 400;
+            }
+        
+            .withdrawal_Balance {
+                font-weight: bold;
+                color: #08c18d;
+                font-size: 1.2em;
+                margin: 20px 0px;
+            }
+        
+            .withdrawal_account_details {
+                display: flex;
+                justify-content: center;
+                text-align: left;
+                font-size: 12px;
+                margin: 20px 0px;
+            }
+        
+            .withdrawal_amount {
+                .withdrawal_amount_text {
+                    color: #e2680e;
+                    font-weight: bold;
+                    letter-spacing: 0px;
+                    margin-bottom: 5px;
+                }
+        
+                .withdrawal_amount_input {
+                    display: flex;
+                    justify-content: center;
+        
+                    input {
+                        padding: 2px 15px;
+        
+                        &::-webkit-inner-spin-button {
+                            display: none;
+                        }
+                    }
+                        .btn-success{
+                            overflow-wrap: break-word;
+                            background-color: #08c18d;
+                            border-color: #08c18d;
+        
+                            &:hover{
+                                background-color: #08c18d !important;
+                                border-color: #08c18d !important;
+                            }
+        
+                            &:focus{
+                                box-shadow: 0 0 0 0.25rem rgb(38 224 138 / 50%);
+                            }
+                        }
+                   
+                }
+                .withdrawal_otp_input {
+                    display: flex;
+                    justify-content: center;
+                    margin-top: 20px;
+        
+                    input {
+                        padding: 2px 15px;
+        
+                        &::-webkit-inner-spin-button {
+                            display: none;
+                        }
+                    }
+                        .btn-success{
+                            background-color: #5358cc;
+                            border-color: #5358cc;
+        
+                            &:hover{
+                                background-color: #5358cc !important;
+                                border-color: #5358cc !important;
+                            }
+        
+                            &:focus{
+                                box-shadow: 0 0 0 0.25rem rgb(199 201 244);
+                            }
+                        }
+                   
+                }
+        
+            }
+        }
+}
+        
+.slice_addFund_section {
+    // text-align: center;
+    padding: 20px;
+    // background: #f7f9fc;
+    .addFund_Head {
+        font-size: 14px;
+        color: gray;
+        letter-spacing: 0px;
+    }
+    .addFund_Balance {
+        margin: 20px 0px;
+
+        .addFund_Balance_value {
+            font-weight: bold;
+        }
+        .current_balance_txt{
+            color: #778da9;
+        }
+    }
+
+   
+
+        .add_amount_input {
+            display: flex;
+            
+            margin-top: 10px;
+
+            input {
+                padding: 2px 15px;
+
+                &::-webkit-inner-spin-button {
+                    display: none;
+                }
+            }
+            .btn-success{
+                // padding: 6px 50px;
+                background-color: #08c18d;
+                border-color: #08c18d;
+
+                a{
+                    color: #fff;
+                    text-decoration: none;
+                }
+
+                &:hover{
+                    background-color: #08c18d !important;
+                    border-color: #08c18d !important;
+                }
+
+                &:focus{
+                    box-shadow: 0 0 0 0.25rem rgb(38 224 138 / 50%);
+                }
+            }
+       
+    
+
+       
+    }
+
+    .note {
+        font-size: 13px;
+        color: #778da9;
+        letter-spacing: 0px;
+    }
+
+    .addFund_btn {
+        p {
+            margin: 0px;
+            font-size: 13px;
+            color: #08c18d;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: #5965f9;
+            border-radius: 3px;
+            color: #fff;
+            border: none;
+            padding: 6px;
+        }
+    }
+} 
+
+
+}
+
+.verify_withdraw_modal{
+    text-align: center;
+    .withdraw_image{
+        img{
+            width: 150px;
+            display: block;
+            margin: auto;
+        }
+    }
+    .request_msg{
+        color: gray;
+    }
+    .amount{
+        margin: 20px;
+        font-size: 14px;
+    font-weight: 600;
+    }
+    .text_msg1{
+        font-size: 13px;
+    }
+    .text_msg2{
+        margin: 20px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+    .text_msg3{
+        font-size: 13px;
+        color: #5965f9;
+    }
+}
+
+@media screen and (max-width: 767px) {
+   
+  }
