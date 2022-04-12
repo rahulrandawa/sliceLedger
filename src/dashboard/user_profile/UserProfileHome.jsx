@@ -1,11 +1,35 @@
-import React, {useContext} from 'react'
+import React, {useContext,useState} from 'react'
 import { Container, Row, Col, Image } from 'react-bootstrap'
 import Header from '../common/Header'
 import SideNavbar from '../common/SideNavbar'
 import myContext from '../../context/MyContext'
+import { decryptData } from '../../Helper'
 
 export default function UserProfileHome() {
     const showNav = useContext(myContext)
+    const accessToken =  localStorage.getItem('accessToken')
+    const [userinfo, setUser] = useState({});
+    
+    function userDetail() {
+        fetch("https://bharattoken.org/sliceLedger/admin/api/auth/user", {
+            "method": "GET",
+            "headers": {
+                "content-type": "application/json",
+                "accept": "application/json",
+                Authorization: accessToken
+            },
+           })
+          .then(response => response.json())
+          .then(response => {
+            const res  = decryptData(response)
+            setUser(res);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+    }
+
+    userDetail();
     return (
         <>
             <Header/>
@@ -39,13 +63,14 @@ export default function UserProfileHome() {
                                                     </div>
 
                                                     <div className="person_details">
+                                                    
                                                         <Row>
 
                                                             <Col lg={6} md={6}>
                                                                 <p className='title'>First Name</p>
                                                             </Col>
                                                             <Col lg={6} md={6}>
-                                                                <p className='text'>Priyanka</p>
+                                                                <p className='text'> Priyanka </p>
                                                             </Col>
 
 

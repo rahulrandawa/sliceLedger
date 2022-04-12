@@ -14,17 +14,9 @@ export default function SideNavbar() {
     const location = useLocation();
     const { pathname } = location;
     const splitLocation = pathname.split("/");
-    
-    
-    const token =  localStorage.getItem('token')
-    console.log("login token",token);
-    if(token == null){
-        console.log('yes');
-        window.location = '/login'; 
-    }else{
-        console.log('no');
-        History('/dashboard');   
-    }
+    const accessToken =  localStorage.getItem('accessToken')
+
+
  // =======================Logout Api Call=====================================
  function logout() {
     fetch("https://bharattoken.org/sliceLedger/admin/api/auth/logout", {
@@ -32,20 +24,20 @@ export default function SideNavbar() {
         "headers": {
             "content-type": "application/json",
             "accept": "application/json",
-            Authorization: `Bearer ${token}` 
+            Authorization: accessToken
         },
        })
       .then(response => response.json())
       .then(response => {
         const res  = decryptData(response)
-        console.log('====================================');
-        console.log(res);
+        console.log("login token",accessToken)
         if(res.status === 200){
-          localStorage.removeItem('token');
+          localStorage.removeItem('accessToken');
           localStorage.clear();
-            History('/');
+          History('/login');
         }else{
-            History('/dashboard'); 
+           
+          History('/dashboard'); 
         }
        
       })
