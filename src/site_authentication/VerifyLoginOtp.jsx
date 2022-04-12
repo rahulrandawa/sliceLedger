@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { ReactSession } from 'react-client-session';
 import myContext from '../context/MyContext'
 import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -9,7 +10,6 @@ import Login_img from '../assets/images/login.png'
 import { decryptData } from '../Helper'
 import { LoginOtpForm } from '../Form'
 import axios from 'axios'
-import { ReactSession } from 'react-client-session';
 
 export default function VerifyLoginOtp() {
     ReactSession.setStoreType("localStorage");
@@ -54,14 +54,9 @@ export default function VerifyLoginOtp() {
           .then(response => response.json())
           .then(response => {
             const res  = decryptData(response)
-            console.log('====================================');
-            console.log(res);
-            console.log('====================================');
-           // console.log(res.result.accessToken);
-           localStorage.setItem('token', res.result.accessToken);
-           const token =  localStorage.getItem('token')
-            console.log(token);
-             History('/dashboard');
+            localStorage.setItem('accessToken', `Bearer ${res.result.accessToken}`);
+            const accessToken =  localStorage.getItem('accessToken')
+            History('/dashboard');
           })
           .catch(err => {
             console.log(err);
