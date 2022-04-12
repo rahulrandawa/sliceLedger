@@ -1,9 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState, useEffect } from 'react'
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
 import './assets/style/main.scss';
-// import Footer from './common/Footer';
-// import Header from "./common/Header";
+import React from 'react'
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import {AuthRoute, AuthNotRoute} from "./AuthRoute";
 import Home from './landing_page/Home'
 import ForgetPassword from './site_authentication/ForgetPassword';
 import ResetPassword from './site_authentication/ResetPassword';
@@ -14,7 +15,7 @@ import DashHome from './dashboard/home/DashHome';
 import Wallet from './dashboard/home/Wallet';
 import UserProfileHome from './dashboard/user_profile/UserProfileHome';
 import UserEditProfile from './dashboard/user_profile/UserEditProfile';
-import  ChangePwd  from './dashboard/user_profile/ChangePwd';
+import ChangePwd  from './dashboard/user_profile/ChangePwd';
 import UserAccountSetting from './dashboard/user_profile/UserAccountSetting';
 import DisableAccount from './dashboard/user_profile/DisableAccount';
 import UserAccountDetails from './dashboard/user_profile/UserAccountDetails';
@@ -26,9 +27,6 @@ import FiatWallet from './dashboard/wallet/FiatWallet';
 import SliceWallet from './dashboard/wallet/SliceWallet';
 import PaymentMethod from './dashboard/wallet/PaymentMethod';
 import Data from './context/Data';
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
-import {AuthRoute, AuthNotRoute} from "./AuthRoute";
 
 function App() {
 
@@ -56,17 +54,6 @@ function App() {
           <Route exact path='/forget_password' element= {
             <AuthNotRoute>
               <ForgetPassword />
-            </AuthNotRoute>
-          }
-          />
-          <Route exact path='/verify-otp' element= {
-            <AuthNotRoute>
-              <VerifyLoginOtp />
-            </AuthNotRoute>
-          }/>
-          <Route exact path='/Reset-Password' element= {
-            <AuthNotRoute>
-              <ResetPassword />
             </AuthNotRoute>
           }
           />

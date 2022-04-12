@@ -1,11 +1,11 @@
-export default function validate(values) {
-    let errors = {};
+export default function validate(values1) {
+    let errors1 = {};
 
-    if (!values.otp) {
-        errors.otp = 'OTP filed is required';
-    }else if (values.otp.length != 4) {
-        errors.otp = 'Please Enter 4 Digit OTP';
+    if (!values1.otp) {
+        errors1.otp = 'OTP filed is required';
+    }else if (values1.otp.length != 4) {
+        errors1.otp = 'Please Enter 4 Digit OTP';
     } 
 
-    return errors;
+    return errors1;
   };

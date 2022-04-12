@@ -33,6 +33,7 @@ export default function SideNavbar() {
         if(res.status === 200){
           localStorage.removeItem('accessToken');
           localStorage.clear();
+          sessionStorage.clear()
           History('/login');
         }else{
           History('/dashboard'); 
