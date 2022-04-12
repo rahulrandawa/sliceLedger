@@ -7,7 +7,6 @@ import Login_img from '../assets/images/login.png'
 import validate from '../validation/SignUp';
 import { decryptData } from '../Helper'
 import { SignUpForm } from '../Form'
-import { toast } from 'react-toastify';
 
 export default function SignUp() {
 
@@ -23,7 +22,7 @@ export default function SignUp() {
 
 // get Country for signUp select .....................
     useEffect(() => {
-        fetch("http://localhost/slice_ledger/api/auth/country", {
+        fetch("https://bharattoken.org/sliceLedger/admin/api/auth/country", {
             "method": "GET",
             "headers": {
               "content-type": "application/json",
@@ -61,13 +60,8 @@ function SignUp() {
       .then(response => response.json())
       .then(response => {
         const res  = decryptData(response)
-        if (parseInt(res.status) == 200) {
-            
-            toast.success(res.message)
-            History('/login');
-        }else{
-            toast.error(res.message)
-        }
+        console.log(res)
+        History('/login');
       })
       .catch(err => {
         console.log(err);

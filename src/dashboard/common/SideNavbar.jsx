@@ -1,15 +1,59 @@
 import React from 'react'
 import { Container, Row, Col,Accordion } from "react-bootstrap"
-import { Link,useLocation } from 'react-router-dom'
+import { Link,useLocation,useNavigate,Redirect  } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWallet, faGauge,faUser,faPenToSquare,faSliders,faUserXmark,faKey,faFileInvoice,faUserCheck,faMoneyBillTransfer,faMessage,faArrowRightFromBracket} from '@fortawesome/free-solid-svg-icons'
 // import { faWallet} from '@fortawesome/free-regular-svg-icons'
+import { decryptData } from '../../Helper'
+import { ReactSession } from 'react-client-session'
+
+
 export default function SideNavbar() {
+    ReactSession.setStoreType("localStorage");
+    let History = useNavigate();
     const location = useLocation();
     const { pathname } = location;
     const splitLocation = pathname.split("/");
-    // console.log(splitLocation[1])
-
+    
+    
+    const token =  localStorage.getItem('token')
+    console.log("login token",token);
+    if(token == null){
+        console.log('yes');
+        window.location = '/login'; 
+    }else{
+        console.log('no');
+        History('/dashboard');   
+    }
+ // =======================Logout Api Call=====================================
+ function logout() {
+    fetch("https://bharattoken.org/sliceLedger/admin/api/auth/logout", {
+        "method": "GET",
+        "headers": {
+            "content-type": "application/json",
+            "accept": "application/json",
+            Authorization: `Bearer ${token}` 
+        },
+       })
+      .then(response => response.json())
+      .then(response => {
+        const res  = decryptData(response)
+        console.log('====================================');
+        console.log(res);
+        if(res.status === 200){
+          localStorage.removeItem('token');
+          localStorage.clear();
+            History('/');
+        }else{
+            History('/dashboard'); 
+        }
+       
+      })
+      .catch(err => {
+        console.log(err);
+      });
+}
+// ===============================End Logout Api Call ========================================
     return (
         <>
             <div className="slice_dash_sideNav">
@@ -166,7 +210,7 @@ export default function SideNavbar() {
                                                         <div className='menu_icon'>
                                                             <FontAwesomeIcon icon={faArrowRightFromBracket} />
                                                         </div>
-                                                        <div className='title'><Link to='/'>Logout</Link></div>
+                                                        <div className='title' onClick={logout}>Logout</div>
                                                     </div>
 
                                                 </li>

@@ -8,12 +8,14 @@ import validate from '../validation/VerifyOtp'
 import Login_img from '../assets/images/login.png'
 import { decryptData } from '../Helper'
 import { LoginOtpForm } from '../Form'
-import { toast } from 'react-toastify';
 import axios from 'axios'
+import { ReactSession } from 'react-client-session';
 
 export default function VerifyLoginOtp() {
+    ReactSession.setStoreType("localStorage");
+   
+    let History = useNavigate();
     const data = useContext(myContext);
-    let History = useNavigate()
     const [ipAddress, setIP] = useState('');
     const userEmail = window.sessionStorage.getItem("email");
 
@@ -52,15 +54,14 @@ export default function VerifyLoginOtp() {
           .then(response => response.json())
           .then(response => {
             const res  = decryptData(response)
-
-            if (parseInt(res.status) == 200) {
-                toast.success(res.message)
-                History('/dashboard');
-
-            }else{
-                toast.error(res.message)
-            }
-            
+            console.log('====================================');
+            console.log(res);
+            console.log('====================================');
+           // console.log(res.result.accessToken);
+           localStorage.setItem('token', res.result.accessToken);
+           const token =  localStorage.getItem('token')
+            console.log(token);
+             History('/dashboard');
           })
           .catch(err => {
             console.log(err);
