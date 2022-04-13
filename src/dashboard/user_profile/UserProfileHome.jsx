@@ -12,10 +12,8 @@ export default function UserProfileHome() {
     const accessToken =  localStorage.getItem('accessToken')
     console.log(accessToken);
     const [user, setUser] = useState([]);
-
-    localStorage.setItem('username', user.first_name);
     
-      useEffect( () => {
+    useEffect( () => {
         userDetail()
       }, [])
 
@@ -31,10 +29,10 @@ export default function UserProfileHome() {
           .then(response => response.json())
           .then(response => {
             const res  = decryptData(response);
-            if (parseInt(res.status) == 401) {
+            if (parseInt(res.status) === 401) {
                 History('/login');
             }
-            setUser(res);
+            setUser(res.result);
           })
           .catch(err => {
             console.log(err);

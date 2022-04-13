@@ -10,8 +10,6 @@ import { decryptData } from '../../Helper'
 import { AddBankForm } from '../../Form'
 
 const accessToken =  localStorage.getItem('accessToken')
-
-const username =  localStorage.getItem('username')
 export default function User_Account_details() {
     const showNav = useContext(myContext)
 
@@ -32,7 +30,7 @@ function AddBank() {
           Authorization: accessToken
         },
         "body": JSON.stringify({
-          acountNumber:values.acountNumber,
+           acountNumber:values.acountNumber,
           ifsc:values.ifsc,
          
         })
@@ -79,7 +77,7 @@ const {
                                         <p>User Name</p>
                                     </div>
                                     <form  onSubmit={handleSubmit} noValidate>
-                                    <input type="hidden" name="name" value={username} />
+                                   
                                     <div className="account_number_fields">
                                         <div className="account_number_div">
                                             <input type={passwordShown ? "text" : "password"} placeholder='Account Number'  
@@ -89,19 +87,25 @@ const {
                                                 <FontAwesomeIcon icon={togglePwd ? faEye : faEyeSlash} />
                                             </div>
                                         </div>
-
+                                        {errors.acountNumber && (
+                                            <span className="error invalid-feedback">{errors.acountNumber}</span>
+                                        )}
                                         <div className="re-account_number_div">
                                             <input type="password" placeholder='Re-Enter Account Number' 
                                             onChange={handleChange} 
                                             name="re_acountNumber"/>
                                         </div>
-
+                                        {errors.re_acountNumber && (
+                                            <span className="error invalid-feedback">{errors.re_acountNumber}</span>
+                                        )}
                                         <div className="ifsc_code_div">
                                             <input type="text" placeholder='IFSC Code' 
                                             onChange={handleChange} 
                                             name="ifsc"/>
                                         </div>
-
+                                        {errors.ifsc && (
+                                            <span className="error invalid-feedback">{errors.ifsc}</span>
+                                        )}       
                                         <div className="warning_msg">
                                             <div className="icon"><FontAwesomeIcon icon={faCircleExclamation} /></div>
                                             <p>The above bank account must belong to you. Any other bank account will be rejected.</p>
