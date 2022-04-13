@@ -31,7 +31,6 @@ export default function SideNavbar() {
       .then(response => {
 
         const res  = decryptData(response)
-        console.log("login token",accessToken)
         localStorage.removeItem('accessToken');
         localStorage.clear();
         sessionStorage.clear()
