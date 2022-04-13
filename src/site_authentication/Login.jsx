@@ -1,20 +1,25 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLock, faEnvelope, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Col, Container, Row, Image } from 'react-bootstrap'
 import myContext from '../context/MyContext'
 import validate from '../validation/Login'
+import validation from '../validation/VerifyOtp'
 import { Link, useNavigate } from 'react-router-dom'
 import Login_img from '../assets/images/login.png'
 import { decryptData } from '../Helper'
-import { LoginForm } from '../Form'
+import { LoginForm, LoginOtpForm } from '../Form'
 import { toast } from 'react-toastify';
+import axios from 'axios'
 
 export default function Login() {
     // ============================ Hide and Show Password Start ================================
     const [passwordShow, setPasswordShow] = useState(false)
-    let History = useNavigate()
+    const [isLoggedIn, setisLoggedIn] = useState(false)
+    let History = useNavigate();
     const data = useContext(myContext);
+    const [ipAddress, setIP] = useState('');
+    const userEmail = window.sessionStorage.getItem("email");
     function passwordEye() {
         setPasswordShow(!passwordShow)
     }
@@ -47,8 +52,8 @@ export default function Login() {
             const email = res.result.email;
             sessionStorage.setItem("email", email);
             data.setLoginapi(res)
-            toast.success(res.message)
-            History('/verify-otp');
+            setisLoggedIn(!isLoggedIn)
+            toast.success(res.message)  
         }else{
             toast.error(res.message)
         }
@@ -59,8 +64,63 @@ export default function Login() {
       });
     }
 
+    const {
+        values1,
+        errors1,
+        handleOTPChange,
+        handleOTPSubmit
+      } = LoginOtpForm(otpSubmit, validation);
+
+    // ===============================Get IP Adsress ========================================
+    const getData = async () => {
+        const res = await axios.get('https://geolocation-db.com/json/')
+        console.log(res);
+        setIP(res.data.IPv4)
+      }
+      useEffect( () => {
+        getData()
+      }, [])
+
+     // =======================SignUp Api Call=====================================
+     function otpSubmit() {
+        fetch("https://bharattoken.org/sliceLedger/admin/api/auth/verifyOtp", {
+            "method": "POST",
+            "headers": {
+              "content-type": "application/json",
+              "accept": "application/json"
+            },
+            "body": JSON.stringify({
+              email:userEmail,
+              otp:values1.otp,
+              deviceName:"Device",
+              IpAdderss:ipAddress
+            })
+          })
+          .then(response => response.json())
+          .then(response => {
+
+            
+            const res  = decryptData(response)
+            if (parseInt(res.status) == 200) {
+                localStorage.setItem('accessToken', `Bearer ${res.result.accessToken}`);
+                const accessToken =  localStorage.getItem('accessToken')
+                toast.success(res.message)
+                History('/dashboard');
+            }else{
+                toast.error(res.message)
+            }
+            
+          })
+          .catch(err => {
+            console.log(err);
+          });
+    }
+    // ===============================End SingUp Api Call ========================================
+
     return (
         <>
+        { !isLoggedIn
+            ?  
             <section className='slice_login_section'>
                 <Container>
                     <Row className='justify-content-center'>
@@ -117,6 +177,41 @@ export default function Login() {
                     </Row>
                 </Container>
             </section>
-        </>
+            :  
+            <section className='slice_forgetPassword_section'>
+                <Container>
+                    <Row className='justify-content-center'>
+                        <Col lg={6} className="forget_form_left_bg">
+                            <div className='slice_forget_form_left'>
+                                <Image src={Login_img} fluid />
+                            </div>
+                        </Col>
+                        <Col lg={6} className="forget_form_right_bg">
+                            <div className="slice_forgetPassword_form">
+                                <div className='slice_forgetPassword_form_head'>Login</div>
+                                <div className='slice_forgetPasswordForm'>
+                                    <form onSubmit={handleOTPSubmit} noValidate>
+                                    <div className='email_field_div'>
+                                        <input className='col-12' type="text" placeholder='OTP'
+                                        name='otp'
+                                        autoComplete="off"
+                                        onChange={handleOTPChange} 
+                                        style={{ background:"transparent" , border:"none",color:"white"}}
+                                        />
+                                    </div>
+                                    {errors1.otp && (
+                                        <span className="error invalid-feedback">{errors1.otp}</span>
+                                    )}
+                                        <input type="submit" value="Continue" />
+                                    </form>
+                                </div>
+                            </div>
+                        </Col>
+                    </Row>
+                </Container>
+            </section>
+          }
+  
+        </> 
     )
 }

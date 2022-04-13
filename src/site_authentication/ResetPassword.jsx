@@ -1,14 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, {  useContext } from 'react'
 import myContext from '../context/MyContext'
-import { Link, useNavigate } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLock, faEnvelope } from "@fortawesome/free-solid-svg-icons"
+import { useNavigate } from 'react-router-dom'
 import { Col, Container, Row, Image } from 'react-bootstrap'
 import validate from '../validation/VerifyOtp'
 import Login_img from '../assets/images/login.png'
 import { decryptData } from '../Helper'
 import { ResetPForm } from '../Form'
-import axios from 'axios'
 import { toast } from 'react-toastify';
 
 export default function ResetPassword() {

@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { ReactSession } from 'react-client-session';
 import myContext from '../context/MyContext'
-import { Link, useNavigate } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLock, faEnvelope } from "@fortawesome/free-solid-svg-icons"
+import { useNavigate } from 'react-router-dom'
 import { Col, Container, Row, Image } from 'react-bootstrap'
 import validate from '../validation/VerifyOtp'
 import Login_img from '../assets/images/login.png'
 import { decryptData } from '../Helper'
 import { LoginOtpForm } from '../Form'
+import { toast } from 'react-toastify';
 import axios from 'axios'
 
 export default function VerifyLoginOtp() {
@@ -53,13 +52,18 @@ export default function VerifyLoginOtp() {
           })
           .then(response => response.json())
           .then(response => {
-              
-            const res  = decryptData(response)
-            console.log(res);
-            localStorage.setItem('accessToken', `Bearer ${res.result.accessToken}`);
-            const accessToken =  localStorage.getItem('accessToken')
+
             
-            History('/dashboard');
+            const res  = decryptData(response)
+            if (parseInt(res.status) == 200) {
+                localStorage.setItem('accessToken', `Bearer ${res.result.accessToken}`);
+                const accessToken =  localStorage.getItem('accessToken')
+                toast.success(res.message)
+                History('/dashboard');
+            }else{
+                toast.error(res.message)
+            }
+            
           })
           .catch(err => {
             console.log(err);

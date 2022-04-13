@@ -72,35 +72,35 @@ const LoginForm = (callback, validate) => {
 
 const LoginOtpForm = (callback, validate) => {
 
-  const [values, setValues] = useState({});
-  const [errors, setErrors] = useState({});
+  const [values1, setValues] = useState({});
+  const [errors1, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (Object.keys(errors).length === 0 && isSubmitting) {
+    if (Object.keys(errors1).length === 0 && isSubmitting) {
       callback();
       setIsSubmitting(false);
     }
-  }, [errors]);
+  }, [errors1]);
 
-  const handleSubmit = (event) => {
+  const handleOTPSubmit = (event) => {
     if (event) event.preventDefault();
-    setErrors(validate(values));
+    setErrors(validate(values1));
     setIsSubmitting(true);
   };
 
-  const handleChange = (event) => {
+  const handleOTPChange = (event) => {
     event.persist();
     setIsSubmitting(false);
-    setValues(values => ({ ...values, [event.target.name]: event.target.value }));
+    setValues(values1 => ({ ...values1, [event.target.name]: event.target.value }));
   };
 
 
   return {
-    handleChange,
-    handleSubmit,
-    values,
-    errors,
+    handleOTPChange,
+    handleOTPSubmit,
+    values1,
+    errors1,
   }
 };
 
@@ -140,35 +140,35 @@ const ForgetPasswordForm = (callback, validate) => {
 
 const ResetPForm = (callback, validate) => {
 
-  const [values, setValues] = useState({});
-  const [errors, setErrors] = useState({});
+  const [values1, setValues] = useState({});
+  const [errors1, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (Object.keys(errors).length === 0 && isSubmitting) {
+    if (Object.keys(errors1).length === 0 && isSubmitting) {
       callback();
       setIsSubmitting(false);
     }
-  }, [errors]);
+  }, [errors1]);
 
-  const handleSubmit = (event) => {
+  const handleResetSubmit = (event) => {
     if (event) event.preventDefault();
-    setErrors(validate(values));
+    setErrors(validate(values1));
     setIsSubmitting(true);
   };
 
-  const handleChange = (event) => {
+  const handleResetChange = (event) => {
     event.persist();
     setIsSubmitting(false);
-    setValues(values => ({ ...values, [event.target.name]: event.target.value }));
+    setValues(values1 => ({ ...values1, [event.target.name]: event.target.value }));
   };
 
 
   return {
-    handleChange,
-    handleSubmit,
-    values,
-    errors,
+    handleResetChange,
+    handleResetSubmit,
+    values1,
+    errors1,
   }
 };
 
