@@ -10,12 +10,16 @@ export default function UserProfileHome() {
     let History = useNavigate();
     const showNav = useContext(myContext)
     const accessToken =  localStorage.getItem('accessToken')
-    console.log(accessToken);
     const [user, setUser] = useState([]);
     
     useEffect( () => {
+<<<<<<< HEAD
         userDetail()
       }, [])
+=======
+    userDetail()
+    }, [])
+>>>>>>> e74154a13641bb6b606b497103e9d6bf6b9a6f4c
 
     function userDetail() {
         fetch("https://bharattoken.org/sliceLedger/admin/api/auth/user", {
@@ -23,7 +27,7 @@ export default function UserProfileHome() {
             "headers": {
                 "content-type": "application/json",
                 "accept": "application/json",
-                Authorization: accessToken
+                "Authorization": accessToken
             },
            })
           .then(response => response.json())

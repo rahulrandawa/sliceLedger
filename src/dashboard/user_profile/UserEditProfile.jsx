@@ -6,6 +6,8 @@ import myContext from '../../context/MyContext'
 
 export default function UserEditProfile() {
     const showNav = useContext(myContext)
+    const auth =  JSON.parse(localStorage.getItem('auth'));
+
 
     return (
         <>
@@ -128,12 +130,12 @@ export default function UserEditProfile() {
                                                             <Col lg={6} md={6}>
                                                                 <p className='text'>Salary</p>
                                                             </Col>
-
-
-
-
                                                         </Row>
                                                     </div>
+
+                                                </div>
+                                                <div className="submit_btn d-flex justify-content-end">
+                                                <button className='btn btn-success'>Submit</button>
                                                 </div>
                                             </Col>
                                         </Row>
