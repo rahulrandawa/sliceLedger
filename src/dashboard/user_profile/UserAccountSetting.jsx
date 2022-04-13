@@ -5,6 +5,7 @@ import { Container, Row, Col, Tab, Nav } from 'react-bootstrap'
 import UserKYCVerification from './UserKYCVerification'
 import UserAccountDetails from './UserAccountDetails'
 
+
 export default function UserAccountSetting() {
     return (
         <>

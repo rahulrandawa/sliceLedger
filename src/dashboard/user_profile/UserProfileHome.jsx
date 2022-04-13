@@ -1,4 +1,4 @@
-import React, {useContext,useState} from 'react'
+import React, {useContext,useState,useEffect} from 'react'
 import { Container, Row, Col, Image } from 'react-bootstrap'
 import Header from '../common/Header'
 import SideNavbar from '../common/SideNavbar'
@@ -8,8 +8,14 @@ import { decryptData } from '../../Helper'
 export default function UserProfileHome() {
     const showNav = useContext(myContext)
     const accessToken =  localStorage.getItem('accessToken')
-    const [userinfo, setUser] = useState({});
+    console.log(accessToken);
+    const [user, setUser] = useState([]);
+
+    localStorage.setItem('username', user.first_name);
     
+    useEffect(() => {
+        userDetail();
+      }, []);
     function userDetail() {
         fetch("https://bharattoken.org/sliceLedger/admin/api/auth/user", {
             "method": "GET",
@@ -22,14 +28,15 @@ export default function UserProfileHome() {
           .then(response => response.json())
           .then(response => {
             const res  = decryptData(response)
-            setUser(res);
+            console.log("user",res.result)
+            setUser(res.result);
           })
           .catch(err => {
             console.log(err);
           });
     }
 
-    userDetail();
+    
     return (
         <>
             <Header/>
@@ -66,33 +73,33 @@ export default function UserProfileHome() {
                                                     
                                                         <Row>
 
-                                                            <Col lg={6} md={6}>
+                                                            <Col lg={4} md={4}>
                                                                 <p className='title'>First Name</p>
                                                             </Col>
-                                                            <Col lg={6} md={6}>
-                                                                <p className='text'> Priyanka </p>
+                                                            <Col lg={8} md={8}>
+                                                                <p className='text'> {user.first_name} </p>
                                                             </Col>
 
 
-                                                            <Col lg={6} md={6}>
+                                                            <Col lg={4} md={4}>
                                                                 <p className='title'>Last Name</p>
                                                             </Col>
-                                                            <Col lg={6} md={6}>
-                                                                <p className='text'>Varma</p>
+                                                            <Col lg={8} md={8}>
+                                                                <p className='text'>{user.last_name}</p>
                                                             </Col>
 
-                                                            <Col lg={6} md={6}>
+                                                            <Col lg={4} md={4}>
                                                                 <p className='title'>Email Id</p>
                                                             </Col>
-                                                            <Col lg={6} md={6}>
-                                                                <p className='text'>user@gmail.com</p>
+                                                            <Col lg={8} md={8}>
+                                                                <p className='text'>{user.email}</p>
                                                             </Col>
 
-                                                            <Col lg={6} md={6}>
+                                                            <Col lg={4} md={4}>
                                                                 <p className='title'>Mobile No</p>
                                                             </Col>
-                                                            <Col lg={6} md={6}>
-                                                                <p className='text'>9999999999</p>
+                                                            <Col lg={8} md={8}>
+                                                                <p className='text'>{user.phoneNumber}</p>
                                                             </Col>
 
 
