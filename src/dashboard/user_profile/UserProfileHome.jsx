@@ -1,11 +1,13 @@
-import React, {useContext,useState,useEffect} from 'react'
+import React, {useContext,useState, useEffect} from 'react'
 import { Container, Row, Col, Image } from 'react-bootstrap'
+import { Link, useLocation, useNavigate  } from 'react-router-dom'
 import Header from '../common/Header'
 import SideNavbar from '../common/SideNavbar'
 import myContext from '../../context/MyContext'
 import { decryptData } from '../../Helper'
 
 export default function UserProfileHome() {
+    let History = useNavigate();
     const showNav = useContext(myContext)
     const accessToken =  localStorage.getItem('accessToken')
     console.log(accessToken);
@@ -13,9 +15,10 @@ export default function UserProfileHome() {
 
     localStorage.setItem('username', user.first_name);
     
-    useEffect(() => {
-        userDetail();
-      }, []);
+      useEffect( () => {
+        userDetail()
+      }, [])
+
     function userDetail() {
         fetch("https://bharattoken.org/sliceLedger/admin/api/auth/user", {
             "method": "GET",
@@ -27,16 +30,17 @@ export default function UserProfileHome() {
            })
           .then(response => response.json())
           .then(response => {
-            const res  = decryptData(response)
-            console.log("user",res.result)
-            setUser(res.result);
+            const res  = decryptData(response);
+            if (parseInt(res.status) == 401) {
+                History('/login');
+            }
+            setUser(res);
           })
           .catch(err => {
             console.log(err);
           });
     }
 
-    
     return (
         <>
             <Header/>

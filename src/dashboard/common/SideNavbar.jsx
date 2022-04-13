@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Row, Col,Accordion } from "react-bootstrap"
-import { Link,useLocation,useNavigate,Redirect  } from 'react-router-dom'
+import { Link,useLocation,useNavigate  } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWallet, faGauge,faUser,faPenToSquare,faSliders,faUserXmark,faKey,faFileInvoice,faUserCheck,faMoneyBillTransfer,faMessage,faArrowRightFromBracket} from '@fortawesome/free-solid-svg-icons'
 // import { faWallet} from '@fortawesome/free-regular-svg-icons'
@@ -29,21 +29,21 @@ export default function SideNavbar() {
        })
       .then(response => response.json())
       .then(response => {
+
         const res  = decryptData(response)
         console.log("login token",accessToken)
-        if(res.status === 200){
-          localStorage.removeItem('accessToken');
-          localStorage.clear();
-          sessionStorage.clear()
-          History('/login');
-        }else{
-           
-          History('/dashboard'); 
-        }
+        localStorage.removeItem('accessToken');
+        localStorage.clear();
+        sessionStorage.clear()
+        History('/login');
        
       })
       .catch(err => {
         console.log(err);
+        localStorage.removeItem('accessToken');
+        localStorage.clear();
+        sessionStorage.clear()
+        History('/login');
       });
 }
 // ===============================End Logout Api Call ========================================

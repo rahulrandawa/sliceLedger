@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { ReactSession } from 'react-client-session'
+import { ReactSession } from 'react-client-session';
 ReactSession.setStoreType("localStorage")
 
 
