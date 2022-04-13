@@ -1,18 +1,22 @@
-import React, { useState,useContext } from 'react'
+import React, { useState,useContext,useRef } from 'react'
 import { Container, Row, Col, Accordion } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faCircleExclamation, faEye } from '@fortawesome/free-solid-svg-icons'
 import Header from '../common/Header'
+import { toast } from 'react-toastify'
 import SideNavbar from '../common/SideNavbar'
 import myContext from '../../context/MyContext'
 import validate from '../../validation/AddBank'
 import { decryptData } from '../../Helper'
 import { AddBankForm } from '../../Form'
 
+
 const accessToken =  localStorage.getItem('accessToken')
 export default function User_Account_details() {
     const showNav = useContext(myContext)
-
+    const auth =  JSON.parse(localStorage.getItem('auth'));
+    const name = auth.first_name+" "+ auth.last_name;
+    
     const [togglePwd, setTogglePwd] = useState(false)
     const [passwordShown, setPasswordShown] = useState(false);
     const handleCheckPassword = () => {
@@ -30,18 +34,26 @@ function AddBank() {
           Authorization: accessToken
         },
         "body": JSON.stringify({
-           acountNumber:values.acountNumber,
-          ifsc:values.ifsc,
+            name:name,
+            acountNumber:values.acountNumber,
+            ifsc:values.ifsc,
          
         })
       })
       .then(response => response.json())
       .then(response => {
         const res  = decryptData(response)
-        console.log(res)
-       
-      })
+        if (parseInt(res.status) == 200) {
+           toast.success(res.message)  
+        }else{
+            toast.error(res.message)
+        }
+       if (parseInt(res.status) === 401) {
+            History('/login');
+        }
+         })
       .catch(err => {
+       
         console.log(err);
       });
     }

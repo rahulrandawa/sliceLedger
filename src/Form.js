@@ -189,6 +189,7 @@ const AddBankForm = (callback, validate) => {
     if (event) event.preventDefault();
     setErrors(validate(values));
     setIsSubmitting(true);
+    
   };
 
   const handleChange = (event) => {
@@ -223,6 +224,7 @@ const ChangePForm = (callback, validate) => {
     if (event) event.preventDefault();
     setErrors(validate(values));
     setIsSubmitting(true);
+    
   };
 
   const handleChange = (event) => {

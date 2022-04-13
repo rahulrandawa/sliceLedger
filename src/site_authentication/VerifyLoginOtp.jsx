@@ -57,6 +57,7 @@ export default function VerifyLoginOtp() {
             const res  = decryptData(response)
             if (parseInt(res.status) == 200) {
                 localStorage.setItem('accessToken', `Bearer ${res.result.accessToken}`);
+                
                 toast.success(res.message)
                 History('/dashboard');
             }else{

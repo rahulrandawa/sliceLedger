@@ -13,13 +13,8 @@ export default function UserProfileHome() {
     const [user, setUser] = useState([]);
     
     useEffect( () => {
-<<<<<<< HEAD
-        userDetail()
-      }, [])
-=======
     userDetail()
     }, [])
->>>>>>> e74154a13641bb6b606b497103e9d6bf6b9a6f4c
 
     function userDetail() {
         fetch("https://bharattoken.org/sliceLedger/admin/api/auth/user", {
