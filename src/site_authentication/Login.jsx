@@ -82,12 +82,6 @@ export default function Login() {
         navigator.geolocation.getCurrentPosition(showPosition);
       }, [])
 
-<<<<<<< HEAD
-     // =======================Login Api Call=====================================
-     function otpResend() {
-         console.log("resend otp")
-        }
-=======
       function showPosition(position) {
          console.log('====================================');
          console.log(position.coords.latitude);
@@ -95,7 +89,6 @@ export default function Login() {
       }
 
      // =======================SignUp Api Call=====================================
->>>>>>> 922e4f38da917702b2c14b5b5da094e8be2f995c
      function otpSubmit() {
         fetch("https://bharattoken.org/sliceLedger/admin/api/auth/verifyOtp", {
             "method": "POST",
@@ -106,17 +99,10 @@ export default function Login() {
             "body": JSON.stringify({
               email:userEmail,
               otp:values1.otp,
-<<<<<<< HEAD
-              deviceName:"Web",
-              IpAdderss:ipAddress,
-              latitude:20,
-              longitude:70
-=======
               deviceName:"Device",
               IpAdderss:ipAddress,
               latitude:"Device",
               longitude:ipAddress
->>>>>>> 922e4f38da917702b2c14b5b5da094e8be2f995c
             })
           })
           .then(response => response.json())
