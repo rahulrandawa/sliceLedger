@@ -79,7 +79,14 @@ export default function Login() {
       }
       useEffect( () => {
         getData()
+        navigator.geolocation.getCurrentPosition(showPosition);
       }, [])
+
+      function showPosition(position) {
+         console.log('====================================');
+         console.log(position.coords.latitude);
+         console.log('====================================');
+      }
 
      // =======================SignUp Api Call=====================================
      function otpSubmit() {
@@ -93,7 +100,9 @@ export default function Login() {
               email:userEmail,
               otp:values1.otp,
               deviceName:"Device",
-              IpAdderss:ipAddress
+              IpAdderss:ipAddress,
+              latitude:"Device",
+              longitude:ipAddress
             })
           })
           .then(response => response.json())

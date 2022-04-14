@@ -1,11 +1,46 @@
 import React, { useContext } from 'react'
+import { Link,useLocation,useNavigate  } from 'react-router-dom'
 import { Col, Container, Row } from 'react-bootstrap'
 import Header from '../common/Header'
+import { decryptData } from '../../Helper'
+import { toast } from 'react-toastify'
 import SideNavbar from '../common/SideNavbar'
 import myContext from '../../context/MyContext'
 
 const DisableAccount = () => {
     const showNav = useContext(myContext)
+    const History = useNavigate()
+    const accessToken =  localStorage.getItem('accessToken')
+
+// =======================Logout Api Call=====================================
+function disable() {
+    fetch("https://bharattoken.org/sliceLedger/admin/api/auth/disable", {
+    "method": "GET",
+    "headers": {
+      "content-type": "application/json",
+      "accept": "application/json",
+      "Authorization": accessToken
+    }
+  })
+  .then(response => response.json())
+  .then(response => {
+    const res  = decryptData(response);
+    if (parseInt(res.status) == 200) { 
+        localStorage.removeItem('accessToken');
+        localStorage.clear();
+        sessionStorage.clear()
+        toast.success(res.message)
+        History('/login'); 
+    }else{
+        toast.error(res.message)
+    }
+
+  })
+  .catch(err => {
+    console.log(err);
+  });
+}
+// ===============================End Logout Api Call ========================================
 
     return (
         <>
@@ -30,7 +65,7 @@ const DisableAccount = () => {
                                         </div>
                                     </div>
                                     <div className="disable_btn">
-                                        <button className='btn btn-danger'>Disable Your Account</button>
+                                        <button className='btn btn-danger' onClick={disable}>Disable Your Account</button>
                                     </div>
                                 </div>
                             </Col>
