@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, Row, Col,Accordion } from "react-bootstrap"
 import { Link,useLocation,useNavigate  } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faWallet, faGauge,faUser,faPenToSquare,faSliders,faUserXmark,faKey,faFileInvoice,faUserCheck,faMoneyBillTransfer,faMessage,faArrowRightFromBracket} from '@fortawesome/free-solid-svg-icons'
+import { faWallet, faGauge,faUser,faPenToSquare,faSliders,faUserXmark,faKey,faFileInvoice,faUserCheck,faMoneyBillTransfer,faMessage,faArrowRightFromBracket,faLock} from '@fortawesome/free-solid-svg-icons'
 // import { faWallet} from '@fortawesome/free-regular-svg-icons'
 import { decryptData } from '../../Helper'
 import { ReactSession } from 'react-client-session'
@@ -44,7 +44,7 @@ export default function SideNavbar() {
         sessionStorage.clear()
         History('/login');
       });
-}
+ }
 // ===============================End Logout Api Call ========================================
     return (
         <>
@@ -197,6 +197,14 @@ export default function SideNavbar() {
                                                     </div>
 
                                                 </li>
+                                                <li className={splitLocation[1] === "security" ? "active" : ""}>
+                                                <div className='menu'>
+                                                    <div className='menu_icon'>
+                                                        <FontAwesomeIcon icon={faLock} />
+                                                    </div>
+                                                    <div className='title'><Link to='/security'>Security</Link></div>
+                                                </div>
+                                            </li>
                                                 <li>
                                                     <div className='menu'>
                                                         <div className='menu_icon'>

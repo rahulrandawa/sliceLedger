@@ -3,11 +3,10 @@ import { Container, Row, Col, Image, Form } from 'react-bootstrap'
 import Header from '../common/Header'
 import SideNavbar from '../common/SideNavbar'
 import myContext from '../../context/MyContext'
-
+import {BsCameraFill} from 'react-icons/bs'
 export default function UserEditProfile() {
     const showNav = useContext(myContext)
     const auth =  JSON.parse(localStorage.getItem('auth'));
-
 
     return (
         <>
@@ -30,15 +29,22 @@ export default function UserEditProfile() {
                                                 </div>
                                             </Col>
                                             <Col lg={4} className="mt-3">
-                                                <div className="userProfile_img">
-                                                    <Image src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" fluid />
-                                                </div>
+                                            <div className="edit_profile_img">
+                                            <Image src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" fluid />
+                                           <div class="wrapper">
+                                               <div class="file-upload">
+                                                   <input type="file" />
+                                                   <BsCameraFill />
+                                               </div>
+                                           </div>
+                                       </div>
                                             </Col>
 
                                             <Col lg={8} className="mt-3">
                                                 <div className="personal_section">
                                                     <div className="person_info_title">
                                                         <h6>Personal Information</h6>
+                                                        <button className='btn btn-primary update_btn'>Update</button>
                                                     </div>
 
                                                     <div className="person_details">
@@ -134,9 +140,7 @@ export default function UserEditProfile() {
                                                     </div>
 
                                                 </div>
-                                                <div className="submit_btn d-flex justify-content-end">
-                                                <button className='btn btn-success'>Submit</button>
-                                                </div>
+                                               
                                             </Col>
                                         </Row>
                                     </div>

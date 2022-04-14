@@ -27,7 +27,7 @@ import FiatWallet from './dashboard/wallet/FiatWallet';
 import SliceWallet from './dashboard/wallet/SliceWallet';
 import PaymentMethod from './dashboard/wallet/PaymentMethod';
 import Data from './context/Data';
-
+import Security from './dashboard/home/Security';
 function App() {
 
   return (
@@ -112,6 +112,11 @@ function App() {
           <Route path='/feedback' element= {
             <AuthRoute>
               <Feedback />
+            </AuthRoute>
+          } />
+          <Route path='/security' element= {
+            <AuthRoute>
+            <Security/>
             </AuthRoute>
           } />
           <Route path='/transaction_history' element= {
