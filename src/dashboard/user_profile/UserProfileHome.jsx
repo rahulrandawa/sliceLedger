@@ -28,7 +28,7 @@ export default function UserProfileHome() {
           .then(response => response.json())
           .then(response => {
             const res  = decryptData(response);
-            if (parseInt(res.status) == 401) {
+            if (parseInt(res.status) === 401) {
                 History('/login');
             }
             setUser(res.result);

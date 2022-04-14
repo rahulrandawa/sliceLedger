@@ -1,20 +1,22 @@
-import React, { useState,useContext } from 'react'
+import React, { useState,useContext,useRef } from 'react'
 import { Container, Row, Col, Accordion } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faCircleExclamation, faEye } from '@fortawesome/free-solid-svg-icons'
 import Header from '../common/Header'
+import { toast } from 'react-toastify'
 import SideNavbar from '../common/SideNavbar'
 import myContext from '../../context/MyContext'
 import validate from '../../validation/AddBank'
 import { decryptData } from '../../Helper'
 import { AddBankForm } from '../../Form'
 
-const accessToken =  localStorage.getItem('accessToken')
 
-const username =  localStorage.getItem('username')
+const accessToken =  localStorage.getItem('accessToken')
 export default function User_Account_details() {
     const showNav = useContext(myContext)
-
+    const auth =  JSON.parse(localStorage.getItem('auth'));
+    const name = auth.first_name+" "+ auth.last_name;
+    
     const [togglePwd, setTogglePwd] = useState(false)
     const [passwordShown, setPasswordShown] = useState(false);
     const handleCheckPassword = () => {
@@ -32,18 +34,26 @@ function AddBank() {
           Authorization: accessToken
         },
         "body": JSON.stringify({
-          acountNumber:values.acountNumber,
-          ifsc:values.ifsc,
+            name:name,
+            acountNumber:values.acountNumber,
+            ifsc:values.ifsc,
          
         })
       })
       .then(response => response.json())
       .then(response => {
         const res  = decryptData(response)
-        console.log(res)
-       
-      })
+        if (parseInt(res.status) == 200) {
+           toast.success(res.message)  
+        }else{
+            toast.error(res.message)
+        }
+       if (parseInt(res.status) === 401) {
+            History('/login');
+        }
+         })
       .catch(err => {
+       
         console.log(err);
       });
     }
@@ -79,7 +89,7 @@ const {
                                         <p>User Name</p>
                                     </div>
                                     <form  onSubmit={handleSubmit} noValidate>
-                                    <input type="hidden" name="name" value={username} />
+                                   
                                     <div className="account_number_fields">
                                         <div className="account_number_div">
                                             <input type={passwordShown ? "text" : "password"} placeholder='Account Number'  
@@ -89,19 +99,25 @@ const {
                                                 <FontAwesomeIcon icon={togglePwd ? faEye : faEyeSlash} />
                                             </div>
                                         </div>
-
+                                        {errors.acountNumber && (
+                                            <span className="error invalid-feedback">{errors.acountNumber}</span>
+                                        )}
                                         <div className="re-account_number_div">
                                             <input type="password" placeholder='Re-Enter Account Number' 
                                             onChange={handleChange} 
                                             name="re_acountNumber"/>
                                         </div>
-
+                                        {errors.re_acountNumber && (
+                                            <span className="error invalid-feedback">{errors.re_acountNumber}</span>
+                                        )}
                                         <div className="ifsc_code_div">
                                             <input type="text" placeholder='IFSC Code' 
                                             onChange={handleChange} 
                                             name="ifsc"/>
                                         </div>
-
+                                        {errors.ifsc && (
+                                            <span className="error invalid-feedback">{errors.ifsc}</span>
+                                        )}       
                                         <div className="warning_msg">
                                             <div className="icon"><FontAwesomeIcon icon={faCircleExclamation} /></div>
                                             <p>The above bank account must belong to you. Any other bank account will be rejected.</p>

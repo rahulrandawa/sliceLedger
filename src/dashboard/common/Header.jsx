@@ -1,16 +1,18 @@
 import React, {useState, useContext} from 'react'
 import { Container, Navbar, Nav, NavDropdown, Image , Row, Col} from "react-bootstrap"
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSliders, faArrowRightFromBracket,faBarsStaggered, faXmark} from '@fortawesome/free-solid-svg-icons'
 import {faUser, faPenToSquare } from '@fortawesome/free-regular-svg-icons'
 import profilePic from '../../assets/images/member.png'
 import myContext from '../../context/MyContext'
+import { decryptData } from '../../Helper'
 
 export default function Header(props) {
     const [toggleProfile_card, setToggleProfile_card] = useState(false);
-   
-
+    let History = useNavigate();
+     const accessToken =  localStorage.getItem('accessToken')
+    console.log(accessToken);
     function toggleProfile(params) {
         setToggleProfile_card(!toggleProfile_card)
     }
@@ -21,7 +23,34 @@ export default function Header(props) {
     const toggleNav = ()=>{
         showNav.setNavOpen(!showNav.navOpen)
      }
-
+   
+    // =======================Logout Api Call=====================================
+  function logout() {
+     fetch("https://bharattoken.org/sliceLedger/admin/api/auth/logout", {
+         "method": "GET",
+         "headers": {
+             "content-type": "application/json",
+             "accept": "application/json",
+             Authorization: accessToken
+         },
+        })
+       .then(response => response.json())
+       .then(response => {
+         const res  = decryptData(response)
+         localStorage.removeItem('accessToken');
+         localStorage.clear();
+         sessionStorage.clear()
+         History('/login');
+         })
+        .catch(err => {
+            console.log(err);
+            localStorage.removeItem('accessToken');
+            localStorage.clear();
+            sessionStorage.clear()
+            History('/login');
+        });
+ }
+ // ===============================End Logout Api Call ========================================
     return (
         <>
             <header className='slice_dash_header d-none'>
@@ -67,7 +96,7 @@ export default function Header(props) {
                                                 <li>
                                                     <div className='menu'>
                                                         <div><FontAwesomeIcon icon={faArrowRightFromBracket}/></div>
-                                                        <div className='title'><Link to="/">logOut</Link></div>
+                                                        <div className='title' onClick={logout}>logOut</div>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -122,7 +151,7 @@ export default function Header(props) {
                                                 <li>
                                                     <div className='menu'>
                                                         <div><FontAwesomeIcon icon={faArrowRightFromBracket}/></div>
-                                                        <div className='title'><Link to="/">logOut</Link></div>
+                                                        <div className='title' onClick={logout}>logOut</div>
                                                     </div>
                                                 </li>
                                             </ul>
