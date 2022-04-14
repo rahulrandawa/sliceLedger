@@ -11,9 +11,9 @@ import { decryptData } from '../../Helper'
 import { AddBankForm } from '../../Form'
 
 
-const accessToken =  localStorage.getItem('accessToken')
 export default function User_Account_details() {
     const showNav = useContext(myContext)
+    const accessToken =  localStorage.getItem('accessToken')
     const auth =  JSON.parse(localStorage.getItem('auth'));
     const name = auth.first_name+" "+ auth.last_name;
     
@@ -23,7 +23,7 @@ export default function User_Account_details() {
         setTogglePwd(!togglePwd)
         setPasswordShown(!passwordShown)
     }
-
+     
     // Add Bank Api Call......................................
 function AddBank() {
     fetch("https://bharattoken.org/sliceLedger/admin/api/auth/addBank", {
@@ -31,26 +31,28 @@ function AddBank() {
         "headers": {
           "content-type": "application/json",
           "accept": "application/json",
-          Authorization: accessToken
+          "Authorization": accessToken
         },
         "body": JSON.stringify({
             name:name,
             acountNumber:values.acountNumber,
             ifsc:values.ifsc,
+            acountType:values.acountType
          
         })
       })
       .then(response => response.json())
       .then(response => {
         const res  = decryptData(response)
-        if (parseInt(res.status) == 200) {
+        if (parseInt(res.status) === 200) {
            toast.success(res.message)  
+           
         }else{
             toast.error(res.message)
         }
        if (parseInt(res.status) === 401) {
             History('/login');
-        }
+    }
          })
       .catch(err => {
        
@@ -64,7 +66,7 @@ const {
     handleChange,
     handleSubmit
   } = AddBankForm(AddBank, validate);
-
+  
     return (
         <>
             <Header/>
@@ -117,7 +119,17 @@ const {
                                         </div>
                                         {errors.ifsc && (
                                             <span className="error invalid-feedback">{errors.ifsc}</span>
-                                        )}       
+                                        )} 
+                                        <div className="acount_type_div">
+                                        <select  onChange={handleChange} name="acountType" id='select'>
+                                            <option value=" ">Select Account Type</option>
+                                            <option value="Saving">Savings Account</option>
+                                            <option value="Current">Current Account </option>
+                                         </select>
+                                         </div>
+                                         {errors.acountType && (
+                                            <span className="error invalid-feedback">{errors.acountType}</span>
+                                        )} 
                                         <div className="warning_msg">
                                             <div className="icon"><FontAwesomeIcon icon={faCircleExclamation} /></div>
                                             <p>The above bank account must belong to you. Any other bank account will be rejected.</p>

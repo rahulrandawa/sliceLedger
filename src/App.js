@@ -7,9 +7,9 @@ import { ToastContainer } from 'react-toastify';
 import {AuthRoute, AuthNotRoute} from "./AuthRoute";
 import Home from './landing_page/Home'
 import ForgetPassword from './site_authentication/ForgetPassword';
-import ResetPassword from './site_authentication/ResetPassword';
+
 import Login from './site_authentication/Login';
-import VerifyLoginOtp from './site_authentication/VerifyLoginOtp';
+
 import SignUp from './site_authentication/SignUp';
 import DashHome from './dashboard/home/DashHome';
 import Wallet from './dashboard/home/Wallet';

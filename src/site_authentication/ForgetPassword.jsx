@@ -99,7 +99,34 @@ export default function ForgetPassword() {
     }
     // ===============================End SingUp Api Call ========================================
     
-
+  // =======================Resend Otp Api Call=====================================
+  function resendOtpForget() {
+    fetch("https://bharattoken.org/sliceLedger/admin/api/auth/reSendOtp", {
+        "method": "POST",
+        "headers": {
+        "content-type": "application/json",
+        "accept": "application/json"
+        },
+        "body": JSON.stringify({
+        email:userEmail,
+        })
+    })
+    .then(response => response.json())
+    .then(response => {
+    const res  = decryptData(response)
+        if (parseInt(res.status) == 200) {
+            console.log(res);
+            toast.success(res.message)
+        }else{
+            toast.error(res.message)
+        }
+        
+    })
+    .catch(err => {
+        console.log(err);
+    });
+}
+// ===============================End Resend Otp Api Call ========================================
 
     return (
         <>
@@ -192,6 +219,9 @@ export default function ForgetPassword() {
                                     )}
                                         <input type="submit" value="Continue" />
                                     </form>
+                                </div>
+                                <div className='slice_resend_otp_foot'>
+                                <button  onClick={resendOtpForget}>Resend otp?</button>
                                 </div>
                             </div>
                         </Col>

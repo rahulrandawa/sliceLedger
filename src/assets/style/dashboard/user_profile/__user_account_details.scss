@@ -80,6 +80,25 @@
                 }
             }
 
+          
+
+            .acount_type_div {
+                margin-top: 20px;
+
+                select {
+                    padding: 6px;
+                    border: 1px solid #9f9a9a;
+                    width: 100%;
+                    // color: #9f9a9a;
+
+                    &:focus-within{
+                        outline: none;
+                    }
+                }
+                
+            }
+            
+
             .warning_msg{
                 margin-top: 20px;
                 display: flex;

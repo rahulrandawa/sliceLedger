@@ -26,5 +26,9 @@ export default function validate(values) {
         errors.ifsc = 'Please specify a valid IFSC Code!';
     }
 
+    if (!values.acountType || values.acountType=="") {
+      errors.acountType = 'Please Select Account Type!';
+     } 
+
      return errors;
   };

@@ -31,7 +31,7 @@ export default function Login() {
         handleSubmit
       } = LoginForm(Login, validate);
 
-    // =======================SignUp Api Call=====================================
+    // =======================Login Api Call=====================================
     function Login() {
         fetch("https://bharattoken.org/sliceLedger/admin/api/auth/login", {
         "method": "POST",
@@ -81,7 +81,10 @@ export default function Login() {
         getData()
       }, [])
 
-     // =======================SignUp Api Call=====================================
+     // =======================Login Api Call=====================================
+     function otpResend() {
+         console.log("resend otp")
+        }
      function otpSubmit() {
         fetch("https://bharattoken.org/sliceLedger/admin/api/auth/verifyOtp", {
             "method": "POST",
@@ -92,8 +95,10 @@ export default function Login() {
             "body": JSON.stringify({
               email:userEmail,
               otp:values1.otp,
-              deviceName:"Device",
-              IpAdderss:ipAddress
+              deviceName:"Web",
+              IpAdderss:ipAddress,
+              latitude:20,
+              longitude:70
             })
           })
           .then(response => response.json())
@@ -115,8 +120,34 @@ export default function Login() {
             console.log(err);
           });
     }
-    // ===============================End SingUp Api Call ========================================
-
+    // ===============================End Verify OTP Api Call ========================================
+    // =======================Resend Otp Api Call=====================================
+    function resendOtp() {
+        fetch("https://bharattoken.org/sliceLedger/admin/api/auth/reSendLoginOtp", {
+            "method": "POST",
+            "headers": {
+            "content-type": "application/json",
+            "accept": "application/json"
+            },
+            "body": JSON.stringify({
+            email:userEmail,
+            })
+        })
+        .then(response => response.json())
+        .then(response => {
+        const res  = decryptData(response)
+            if (parseInt(res.status) == 200) {
+                toast.success(res.message)
+            }else{
+                toast.error(res.message)
+            }
+            
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+    // ===============================End Resend Otp Api Call ========================================
     return (
         <>
         { !isLoggedIn
@@ -204,6 +235,9 @@ export default function Login() {
                                     )}
                                         <input type="submit" value="Continue" />
                                     </form>
+                                </div>
+                                <div className='slice_resend_otp_foot'>
+                                <button  onClick={resendOtp}>Resend otp?</button>
                                 </div>
                             </div>
                         </Col>
