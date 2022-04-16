@@ -1,4 +1,5 @@
-import React, { useState,useContext,useRef } from 'react'
+import React, { useState,useContext,useRef,useEffect } from 'react'
+import { useForm } from "react-hook-form";
 import { Container, Row, Col, Accordion } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faCircleExclamation, faEye } from '@fortawesome/free-solid-svg-icons'
@@ -15,7 +16,11 @@ export default function User_Account_details() {
     const showNav = useContext(myContext)
     const accessToken =  localStorage.getItem('accessToken')
     const auth =  JSON.parse(localStorage.getItem('auth'));
+    // const [details, setAccount] = useState({});
+    // const { reset } = useForm();
+    // const onSubmit = (data, e) => {reset()};
     
+   
     const name = auth.first_name+" "+ auth.last_name;
     
     const [togglePwd, setTogglePwd] = useState(false)
@@ -67,7 +72,8 @@ const {
     handleChange,
     handleSubmit
   } = AddBankForm(AddBank, validate);
-  
+
+ 
     return (
         <>
             <Header/>
@@ -89,7 +95,7 @@ const {
                                         <div>Bank Account should belong to</div>
                                     </div>
                                     <div className="username">
-                                        <p>User Name</p>
+                                        <p>{name}</p>
                                     </div>
                                     <form  onSubmit={handleSubmit} noValidate>
                                    

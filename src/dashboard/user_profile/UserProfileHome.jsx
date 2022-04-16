@@ -17,7 +17,7 @@ export default function UserProfileHome() {
     const accessToken =  localStorage.getItem('accessToken')
     const auth =  JSON.parse(localStorage.getItem('auth'));
     const [user, setUser] = useState([]);
-   console.log(auth.bankAcount);
+//    console.log(auth.bankAcount);
    
     
     useEffect( () => {
