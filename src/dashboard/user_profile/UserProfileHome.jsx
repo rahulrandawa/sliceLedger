@@ -1,13 +1,16 @@
 import React, {useContext,useState, useEffect} from 'react'
 import { Container, Row, Col, Image,Form } from 'react-bootstrap'
 import { Link, useLocation, useNavigate  } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEyeSlash, faCircleExclamation, faEye } from '@fortawesome/free-solid-svg-icons'
 import Header from '../common/Header'
 import SideNavbar from '../common/SideNavbar'
 import myContext from '../../context/MyContext'
 import { decryptData } from '../../Helper'
 import {BsCameraFill} from 'react-icons/bs'
-
-
+import { toast } from 'react-toastify'
+import validate from '../../validation/UpdateProfile'
+import { UpdateProfileForm } from '../../Form'
 
 
 export default function UserProfileHome() {
@@ -28,9 +31,56 @@ export default function UserProfileHome() {
         setIsEdit(true)
     }
 
-    const handleUpdate = ()=>{
-        setIsEdit(false)
+    // const UpdateProfile = ()=>{
+       
+        
+    // }
+
+    function UpdateProfile(){
+        fetch("https://bharattoken.org/sliceLedger/admin/api/auth/updateProfile", {
+            "method": "POST",
+            "headers": {
+                "content-type": "application/json",
+                "accept": "application/json",
+                "Authorization": accessToken
+            },
+            "body": JSON.stringify({
+                first_name:values.first_name,
+                last_name:values.last_name,
+                phoneNumber:values.phoneNumber,
+                profilePic:values.profilePic,
+             
+            })
+           
+           })
+          .then(response => response.json())
+          .then(response => {
+            const res  = decryptData(response);
+            console.log(res)
+            if (parseInt(res.status) === 200) {
+                toast.success(res.message)  
+                setIsEdit(false)
+             }else{
+                 toast.error(res.message)
+             }
+            if (parseInt(res.status) === 401) {
+                History('/login');
+            }
+            
+          })
+          .catch(err => {
+            console.log(err);
+          });
+
+         
     }
+
+    const {
+        values,
+        errors,
+        handleChange,
+        handleSubmit
+      } = UpdateProfileForm(UpdateProfile, validate);
 
     function userDetail() {
         fetch("https://bharattoken.org/sliceLedger/admin/api/auth/user", {
@@ -54,7 +104,8 @@ export default function UserProfileHome() {
           });
     }
 
-
+   
+    
     
 
     return (
@@ -83,68 +134,82 @@ export default function UserProfileHome() {
                                             <Image src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" fluid />
                                            <div class="wrapper">
                                                <div class="file-upload">
-                                                   <input type="file" />
+                                                   <input type="file" name='profilePic' onChange={handleChange}/>
                                                    <BsCameraFill />
                                                </div>
                                            </div>
                                        </div>
                                             </Col>
-    
+                                            
                                             <Col lg={8} className="mt-3">
+                                            <form onSubmit={handleSubmit} noValidate>
                                                 <div className="personal_section">
                                                     <div className="person_info_title">
                                                         <h6>Personal Information</h6>
-                                                        <button className='btn btn-primary update_btn' id='updateButton' onClick={handleUpdate}>Update</button>
+                                                        <button className='btn btn-primary update_btn' id='updateButton' onClick={UpdateProfile}>Update</button>
                                                     </div>
-    
+                                       
                                                     <div className="person_details">
+                                                    
                                                         <Row>
     
-                                                            <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
+                                                            <Form.Group as={Row} className="mb-3"   >
                                                                 <Form.Label column sm="4">
                                                                     First Name
                                                                 </Form.Label>
                                                                 <Col sm="8">
-                                                                    <Form.Control type="text" placeholder="Priyanka" name='first_name' value={user.first_name?user.first_name:""}/>
+                                                                    <Form.Control type="text"  name='first_name' onChange={handleChange} value={ values.first_name == null ? user.first_name : values.first_name}  />
+                                                                    {errors.first_name && (
+                                                                        <span className="error invalid-feedback">{errors.first_name}</span>
+                                                                    )}
                                                                 </Col>
+                                                                
                                                             </Form.Group>
-    
-                                                            <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
+                                                           
+                                                            <Form.Group as={Row} className="mb-3" >
                                                                 <Form.Label column sm="4">
                                                                     Last Name
                                                                 </Form.Label>
                                                                 <Col sm="8">
-                                                                    <Form.Control type="text" placeholder="Varma" name='last_name' value={(user.last_name)?user.last_name:""}/>
+                                                                    <Form.Control type="text"  name='last_name' onChange={handleChange} value={ values.last_name == null ? user.last_name : values.last_name}/>
+                                                                    {errors.last_name && (
+                                                                        <span className="error invalid-feedback">{errors.last_name}</span>
+                                                                    )}   
                                                                 </Col>
                                                             </Form.Group>
-    
-                                                            <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
+                                                            
+                                                            <Form.Group as={Row} className="mb-3" >
                                                                 <Form.Label column sm="4">
                                                                     Email Id
                                                                 </Form.Label>
                                                                 <Col sm="8">
-                                                                    <Form.Control type="text" placeholder="user@gmail.com" name='email' value={(user.email)?user.email:""}/>
+                                                                    <Form.Control type="text"  name='email' value={(user.email)?user.email:""} readOnly/>
                                                                 </Col>
                                                             </Form.Group>
     
     
-                                                            <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
+                                                            <Form.Group as={Row} className="mb-3" >
                                                                 <Form.Label column sm="4">
                                                                     Mobile No
                                                                 </Form.Label>
                                                                 <Col sm="8">
-                                                                    <Form.Control type="text" placeholder="9999999999" name='phoneNumber' value={(user.phoneNumber)?user.phoneNumber:""}/>
+                                                                    <Form.Control type="text"  name='phoneNumber' onChange={handleChange} value={values.phoneNumber == null ? user.phoneNumber : values.phoneNumber}/>
+                                                                    {errors.phoneNumber && (
+                                                                        <span className="error invalid-feedback">{errors.phoneNumber}</span>
+                                                                    )}
                                                                 </Col>
                                                             </Form.Group>
-    
+                                                            
     
     
     
                                                         </Row>
+                                                       
                                                     </div>
+                                                    
                                                 </div>
     
-                                                
+                                                </form>
     
                                                 <div className="account_section">
                                                     <div className="account_info_title">
@@ -193,6 +258,7 @@ export default function UserProfileHome() {
                                                 </div>
                                                
                                             </Col>
+                                           
                                         </Row>
                                     </div>
                                 </div>

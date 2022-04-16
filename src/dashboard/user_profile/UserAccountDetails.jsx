@@ -39,6 +39,7 @@ function AddBank() {
           "accept": "application/json",
           "Authorization": accessToken
         },
+        
         "body": JSON.stringify({
             name:name,
             acountNumber:values.acountNumber,
