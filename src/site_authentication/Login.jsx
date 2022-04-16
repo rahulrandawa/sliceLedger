@@ -223,7 +223,7 @@ export default function Login() {
                         </Col>
                         <Col lg={6} className="forget_form_right_bg">
                             <div className="slice_forgetPassword_form">
-                                <div className='slice_forgetPassword_form_head'>Login</div>
+                                <div className='slice_forgetPassword_form_head'>Verify OTP</div>
                                 <div className='slice_forgetPasswordForm'>
                                     <form onSubmit={handleOTPSubmit} noValidate>
                                     <div className='email_field_div'>

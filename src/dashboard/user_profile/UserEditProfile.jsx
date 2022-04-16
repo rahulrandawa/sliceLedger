@@ -94,6 +94,8 @@ export default function UserEditProfile() {
                                                     </div>
                                                 </div>
 
+                                                
+
                                                 <div className="account_section">
                                                     <div className="account_info_title">
                                                         <h6>Account Information</h6>

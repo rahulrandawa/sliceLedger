@@ -15,6 +15,7 @@ export default function User_Account_details() {
     const showNav = useContext(myContext)
     const accessToken =  localStorage.getItem('accessToken')
     const auth =  JSON.parse(localStorage.getItem('auth'));
+    
     const name = auth.first_name+" "+ auth.last_name;
     
     const [togglePwd, setTogglePwd] = useState(false)
