@@ -1,5 +1,6 @@
 export default function validate(values) {
     let errors = {};
+    console.log("values.first_name", !values.first_name);
     if (!values.first_name) {
       errors.first_name = 'First Name filed is required';
     } else if (values.first_name.length > 255) {

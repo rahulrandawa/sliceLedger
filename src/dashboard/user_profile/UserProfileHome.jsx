@@ -20,6 +20,7 @@ export default function UserProfileHome() {
     const accessToken =  localStorage.getItem('accessToken')
     const auth =  JSON.parse(localStorage.getItem('auth'));
     const [user, setUser] = useState([]);
+    const [profilePic, setProfilePic] = React.useState("");
 //    console.log(auth.bankAcount);
    
     
@@ -31,11 +32,12 @@ export default function UserProfileHome() {
         setIsEdit(true)
     }
 
-    // const UpdateProfile = ()=>{
-       
-        
-    // }
-
+    function handleProfilePic(event) {
+        setProfilePic(event.target.files[0]);
+         console.log(event.target.files[0])
+         setProfilePic(URL.createObjectURL(event.target.files[0]));
+    
+      }
     function UpdateProfile(){
         fetch("https://bharattoken.org/sliceLedger/admin/api/auth/updateProfile", {
             "method": "POST",
@@ -59,6 +61,7 @@ export default function UserProfileHome() {
             console.log(res)
             if (parseInt(res.status) === 200) {
                 toast.success(res.message)  
+                userDetail();
                 setIsEdit(false)
              }else{
                  toast.error(res.message)
@@ -134,9 +137,11 @@ export default function UserProfileHome() {
                                             <Image src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" fluid />
                                            <div class="wrapper">
                                                <div class="file-upload">
-                                                   <input type="file" name='profilePic' onChange={handleChange}/>
+                                                   <input type="file" name='profilePic' onChange={handleChange} onClick={handleProfilePic}/>
                                                    <BsCameraFill />
+                                                   
                                                </div>
+                                               <img src={profilePic}/>
                                            </div>
                                        </div>
                                             </Col>

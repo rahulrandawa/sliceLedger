@@ -12,13 +12,13 @@ export default function Header(props) {
     const [toggleProfile_card, setToggleProfile_card] = useState(false);
     let History = useNavigate();
      const accessToken =  localStorage.getItem('accessToken')
-    console.log(accessToken);
+    // console.log(accessToken);
     function toggleProfile(params) {
         setToggleProfile_card(!toggleProfile_card)
     }
   const showNav = useContext(myContext)
     // console.log("first", first.count);
-    console.log("header",showNav.navOpen);
+    // console.log("header",showNav.navOpen);
 
     const toggleNav = ()=>{
         showNav.setNavOpen(!showNav.navOpen)

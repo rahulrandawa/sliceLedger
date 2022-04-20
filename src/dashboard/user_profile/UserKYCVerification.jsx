@@ -5,26 +5,35 @@ import { faCircleCheck, faCircleExclamation } from '@fortawesome/free-solid-svg-
 import Header from '../common/Header'
 import SideNavbar from '../common/SideNavbar'
 import myContext from '../../context/MyContext'
+// import validate from '../../validation/KycApprove'
+import { decryptData } from '../../Helper'
+// import { KycApproveForm } from '../../Form'
+import { toast } from 'react-toastify'
 
 export default function UserKYCVerification() {
   const showNav = useContext(myContext)
-
+  
+  const accessToken =  localStorage.getItem('accessToken')
+  console.log(accessToken);
   const [document, setDocument] = useState("")
   const [selectedDoc, setSelectedDoc] = useState(false)
   const [backImageFile, setBackImageFile] = useState(true)
 
-  const [frontFile, setFrontFile] = React.useState("");
-  const [backFile, setBackFile] = React.useState("");
-  const [selfieFile, setSelfieFile] = React.useState("");
+  const [docType, setSelectDocs] = useState("")
+  const [frontFile, setFrontFile] = useState();
+  const [backFile, setBackFile] = useState();
+  const [selfieFile, setSelfieFile] = useState();
+  
 
-  const [show, setShow] = useState(false);
+
+   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const selectDocFile = (e) => {
     setDocument(e.target.value)
     setSelectedDoc(true)
-    if(e.target.value === "Pan Card"){
+    if(e.target.value === "pan"){
       setBackImageFile(false)
     }else{
       setBackImageFile(true)
@@ -32,29 +41,63 @@ export default function UserKYCVerification() {
   
   }
 
+  
+// function handleUploadFront(event){
+//   setFrontFile(URL.createObjectURL(event.target.files[0]));
+//   setBackFile(URL.createObjectURL(event.target.files[0]));
+//   setSelfieFile(URL.createObjectURL(event.target.files[0]));
+// }
 
-  function handleUploadFront(event) {
-    setFrontFile(event.target.files[0].name);
-    //  console.log(event.target.files[0].name)
 
+   
+function KycApprove (){
+  const formData = new FormData();
+  if(docType === "adhar"){
+    formData.append("front_doc", frontFile);
+    formData.append("back_doc", backFile);
+    formData.append("selfie", selfieFile);
+    formData.append("doc_type", docType);
+  }else{
+   
+    formData.append("front_doc", frontFile);
+   
+    formData.append("selfie", selfieFile);
+    formData.append("doc_type", docType);
   }
-
-  function handleUploadBack(event) {
-    setBackFile(event.target.files[0].name);
-    // console.log(event.target.files[0].name)
-  }
-
-  function handleUploadSelfie(event) {
-    setSelfieFile(event.target.files[0].name);
-    // console.log(event.target.files[0].name)
-  }
-
-
-
+  console.log(formData.getAll("front_doc")[0],formData.getAll("back_doc")[0],formData.getAll("selfie")[0],formData.getAll("doc_type")[0]);
+      
+    fetch("https://bharattoken.org/sliceLedger/admin/api/auth/kyc", {
+        method: "POST",
+        mode:'cors',
+        headers: {
+            'Accept':'application/json',
+            'Content-Type':'multipart/form-data',
+            'Authorization':accessToken
+        },
+        data: formData
+      })
+      .then(response => response.json())
+      .then(response => {
+        const res  = decryptData(response)
+        console.log(res)
+        if (parseInt(res.status) === 200) {
+          toast.success(res.message)  
+          
+        }else{
+            toast.error(res.message)
+        }
+      if (parseInt(res.status) === 401) {
+            History('/login');
+         }
+        })
+      .catch(err => {
+        console.log(err);
+      });
+};
+ 
  
 
-
-  return (
+ return (
 
     <>
       <Header />
@@ -72,19 +115,17 @@ export default function UserKYCVerification() {
                   </div>
 
                   <div className="kyc_verification_fields">
+                
                     <div className="select_document_div">
-                      <select  onChange={selectDocFile} id="select">
-                        <option value="">Select Your Document </option>
-                        <option value="Aadhar Card">Aadhar Card</option>
-                        <option value="Pan Card">Pan Card</option>
+                      <select   id="select" onClick={selectDocFile} name="doc_type" onChange={(e) => setSelectDocs(e.target.value)}>
+                        <option value=" ">Select Your Document </option>
+                        <option value='adhar'>Aadhar Card</option>
+                        <option value='pan'>Pan Card</option>
 
                       </select>
-                    
+                     
                     </div>
-                    {selectedDoc ? <div className="selected_document_div">
-                      <input type="text" placeholder={`Enter ${document} Number`} />
-                    </div>
-                      : " "}
+                   
 
 
                     <div className="upload_document_div">
@@ -96,9 +137,10 @@ export default function UserKYCVerification() {
                           <p>Front</p>
                           <div className="front">
                             <label for="file-upload" className="custom-file-upload">+</label>
-                            <input id="file-upload" type="file" style={{ display: "none" }} onChange={handleUploadFront} />
-
+                            <input id="file-upload" type="file" name="front_doc" onChange={(e) => setFrontFile(e.target.files[0])}/>
+                           
                           </div>
+                          
                           {/* <p>{frontFile}</p> */}
                         </div>
 
@@ -106,7 +148,8 @@ export default function UserKYCVerification() {
                           <p>Back</p>
                           <div className="back">
                             <label for="file-upload" className="custom-file-upload">+</label>
-                            <input id="file-upload" type="file" style={{ display: "none" }} onChange={handleUploadBack} />
+                            <input  type="file" name="back_doc" onChange={(e) => setBackFile(e.target.files[0])}/>
+                            
                           </div>
                           {/* <p>{backFile}</p> */}
                         </div> : " "}
@@ -115,7 +158,8 @@ export default function UserKYCVerification() {
                           <p>Selfie</p>
                           <div className="selfie">
                             <label for="file-upload" className="custom-file-upload">+</label>
-                            <input id="file-upload" type="file" style={{ display: "none" }} onChange={handleUploadSelfie} />
+                            <input  type="file" name="selfie" onChange={(e) => setSelfieFile(e.target.files[0])}/>
+                          
                           </div>
                           {/* <p>{selfieFile}</p>  */}
                         </div>
@@ -128,8 +172,9 @@ export default function UserKYCVerification() {
                       <p>Upload your selfie with current date and signature on blank page</p>
                     </div>
                     <div className="kyc_verification_btn">
-                      <button className='done_btn' onClick={handleShow}>Done</button>
+                      <button className='done_btn' type='submit' onClick={KycApprove}>Done</button>
                     </div>
+                   
                   </div>
                 </div>
               </Col>
@@ -158,11 +203,7 @@ export default function UserKYCVerification() {
           {/* ===============successful modal end================== */}
         </section>
       </div>
-
-
-
-
-    </>
+ </>
   )
 }
 

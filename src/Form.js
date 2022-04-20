@@ -247,7 +247,7 @@ const UpdateProfileForm = (callback, validate) => {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+ console.log(values);
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       callback();
@@ -276,6 +276,47 @@ const UpdateProfileForm = (callback, validate) => {
     errors,
   }
 };
+
+const KycApproveForm = (callback, validate) => {
+  
+
+
+  const [values, setValues] = useState({});
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+
+  console.log("values",values);
+  useEffect(() => {
+    if (Object.keys(errors).length === 0 && isSubmitting) {
+      callback();
+      setIsSubmitting(false);
+    }
+  }, [errors]);
+
+  const handleSubmit = (event) => {
+    if (event) event.preventDefault();
+    // console.log("KYC",values);
+    setErrors(validate(values));
+    setIsSubmitting(true);
+    
+  };
+
+  const handleChange = (event) => {
+    event.persist();
+    setIsSubmitting(false);
+    setValues(values => ({ ...values, [ event.target.name]: event.target.value, }));
+    // console.log("KYC1",values);
+  };
+
+
+  return {
+    handleChange,
+    handleSubmit,
+    values,
+    errors,
+  }
+};
 export {
     SignUpForm,
     LoginForm,
@@ -284,5 +325,6 @@ export {
     ResetPForm,
     AddBankForm,
     ChangePForm,
-    UpdateProfileForm
+    UpdateProfileForm,
+    KycApproveForm
 }

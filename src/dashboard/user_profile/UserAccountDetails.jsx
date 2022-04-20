@@ -62,7 +62,6 @@ function AddBank() {
     }
          })
       .catch(err => {
-       
         console.log(err);
       });
     }
