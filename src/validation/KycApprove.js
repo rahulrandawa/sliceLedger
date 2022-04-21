@@ -1,14 +1,15 @@
 export default function validate(values) {
+    console.log(values.doc_type);
     let errors = {};
-    if (!values.docType) {
-      errors.docType = 'Please Select Your Document';
+    if (!values.doc_type) {
+      errors.doc_type = 'Please Select Your Document';
     } 
 
-    if (!values.frontDoc) {
-        errors.frontDoc = 'Please upload Front Docs ';
+    if (!values.front_doc) {
+        errors.front_doc = 'Please upload Front Docs ';
     } 
 
-    if (!values.backDoc) {
+    if (!values.back_doc) {
         errors.back_doc = 'Please upload Back Docs ';
     } 
 

@@ -247,7 +247,7 @@ const UpdateProfileForm = (callback, validate) => {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
- console.log(values);
+ console.log("values",values);
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       callback();
@@ -302,16 +302,35 @@ const KycApproveForm = (callback, validate) => {
     
   };
 
-  const handleChange = (event) => {
+  const setSelectDocs = (event) => {
     event.persist();
     setIsSubmitting(false);
-    setValues(values => ({ ...values, [ event.target.name]: event.target.value, }));
-    // console.log("KYC1",values);
+    setValues(values => ({ ...values, [ event.target.name]: event.target.value}));
+   
   };
-
-
+  const setFrontFile = (event) => {
+    event.persist();
+    setIsSubmitting(false);
+    setValues(values => ({ ...values, [ event.target.name]: event.target.files[0]}));
+  
+  };
+  const setBackFile = (event) => {
+    event.persist();
+    setIsSubmitting(false);
+    setValues(values => ({ ...values, [ event.target.name]:  event.target.files[0]}));
+   
+  };
+  const setSelfieFile = (event) => {
+    event.persist();
+    setIsSubmitting(false);
+    setValues(values => ({ ...values, [ event.target.name]:  event.target.files[0]}));
+   
+  };
   return {
-    handleChange,
+    setSelectDocs,
+    setFrontFile,
+    setBackFile,
+    setSelfieFile,
     handleSubmit,
     values,
     errors,

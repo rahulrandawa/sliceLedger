@@ -137,11 +137,11 @@ export default function UserProfileHome() {
                                             <Image src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" fluid />
                                            <div class="wrapper">
                                                <div class="file-upload">
-                                                   <input type="file" name='profilePic' onChange={handleChange} onClick={handleProfilePic}/>
+                                                   <input type="file" name='profilePic' onChange={handleChange} id="profilePic"/>
                                                    <BsCameraFill />
                                                    
                                                </div>
-                                               <img src={profilePic}/>
+                                               <img src={profilePic} className="profilePic"/>
                                            </div>
                                        </div>
                                             </Col>

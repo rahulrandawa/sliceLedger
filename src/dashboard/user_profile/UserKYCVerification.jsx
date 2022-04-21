@@ -1,20 +1,22 @@
-import React, { useState,useContext } from 'react'
+import React, { useState,useContext,useEffect } from 'react'
 import { Container, Row, Col, Modal } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck, faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 import Header from '../common/Header'
 import SideNavbar from '../common/SideNavbar'
 import myContext from '../../context/MyContext'
-// import validate from '../../validation/KycApprove'
 import { decryptData } from '../../Helper'
-// import { KycApproveForm } from '../../Form'
 import { toast } from 'react-toastify'
+import axios from 'axios'
+import validate from '../../validation/KycApprove'
+import { KycApproveForm } from '../../Form'
+
 
 export default function UserKYCVerification() {
   const showNav = useContext(myContext)
   
   const accessToken =  localStorage.getItem('accessToken')
-  console.log(accessToken);
+  // console.log(accessToken);
   const [document, setDocument] = useState("")
   const [selectedDoc, setSelectedDoc] = useState(false)
   const [backImageFile, setBackImageFile] = useState(true)
@@ -24,9 +26,13 @@ export default function UserKYCVerification() {
   const [backFile, setBackFile] = useState();
   const [selfieFile, setSelfieFile] = useState();
   
+  const [preFront, setFrontPreview] = useState();
+  const [preBack, setBackPreview] = useState();
+  const [preSelfie, setSelfiePreview] = useState();
 
+ 
 
-   const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -41,49 +47,42 @@ export default function UserKYCVerification() {
   
   }
 
-  
-// function handleUploadFront(event){
-//   setFrontFile(URL.createObjectURL(event.target.files[0]));
-//   setBackFile(URL.createObjectURL(event.target.files[0]));
-//   setSelfieFile(URL.createObjectURL(event.target.files[0]));
-// }
-
-
-   
-function KycApprove (){
+      
+async function KycApprove (){
+ 
   const formData = new FormData();
   if(docType === "adhar"){
-    formData.append("front_doc", frontFile);
-    formData.append("back_doc", backFile);
-    formData.append("selfie", selfieFile);
+    formData.append("front_doc", frontFile,frontFile.name);
+    formData.append("back_doc", backFile,backFile.name);
+    formData.append("selfie", selfieFile,selfieFile.name);
     formData.append("doc_type", docType);
   }else{
-   
-    formData.append("front_doc", frontFile);
-   
-    formData.append("selfie", selfieFile);
+    formData.append("front_doc", frontFile,frontFile.name);
+    formData.append("selfie", selfieFile,selfieFile.name);
     formData.append("doc_type", docType);
   }
-  console.log(formData.getAll("front_doc")[0],formData.getAll("back_doc")[0],formData.getAll("selfie")[0],formData.getAll("doc_type")[0]);
-      
-    fetch("https://bharattoken.org/sliceLedger/admin/api/auth/kyc", {
-        method: "POST",
-        mode:'cors',
-        headers: {
+ 
+ await  axios.post("https://bharattoken.org/sliceLedger/admin/api/auth/kyc",formData, {
+        "method": "POST",
+        "mode":'cors',
+        "headers": {
             'Accept':'application/json',
             'Content-Type':'multipart/form-data',
             'Authorization':accessToken
         },
-        data: formData
+        
       })
-      .then(response => response.json())
-      .then(response => {
-        const res  = decryptData(response)
+       .then(response => {
+         const res  = decryptData(response.data)
         console.log(res)
         if (parseInt(res.status) === 200) {
-          toast.success(res.message)  
-          
-        }else{
+          toast.success(res.message) 
+          setSelectDocs("")
+          setFrontFile(null)
+          setBackFile(null)
+          setSelfieFile(null) 
+          window.location.reload();
+          }else{
             toast.error(res.message)
         }
       if (parseInt(res.status) === 401) {
@@ -91,12 +90,21 @@ function KycApprove (){
          }
         })
       .catch(err => {
-        console.log(err);
+        const error  = decryptData(err.response.data)
+        if (parseInt(error.status) === 422) {
+          toast.error(error.message)
+       }
+        console.log(error);
       });
 };
  
- 
-
+const {
+  values,
+  errors,
+  handleChange,
+  handleSubmit
+} = KycApproveForm(KycApprove, validate);
+// console.log("values",values.valueOf());
  return (
 
     <>
@@ -115,7 +123,7 @@ function KycApprove (){
                   </div>
 
                   <div className="kyc_verification_fields">
-                
+                <form onSubmit={handleSubmit} noValidate>
                     <div className="select_document_div">
                       <select   id="select" onClick={selectDocFile} name="doc_type" onChange={(e) => setSelectDocs(e.target.value)}>
                         <option value=" ">Select Your Document </option>
@@ -125,7 +133,9 @@ function KycApprove (){
                       </select>
                      
                     </div>
-                   
+                    {errors.doc_type && (
+                      <span className="error invalid-feedback">{errors.doc_type}</span>
+                  )}
 
 
                     <div className="upload_document_div">
@@ -137,31 +147,39 @@ function KycApprove (){
                           <p>Front</p>
                           <div className="front">
                             <label for="file-upload" className="custom-file-upload">+</label>
-                            <input id="file-upload" type="file" name="front_doc" onChange={(e) => setFrontFile(e.target.files[0])}/>
+                            <input id="file-upload"  type="file"  name="front_doc"  onChange={(e) => setFrontFile(e.target.files[0])}/>
                            
                           </div>
-                          
-                          {/* <p>{frontFile}</p> */}
+                         
+                          {errors.front_doc && (
+                            <span className="error invalid-feedback">{errors.front_doc}</span>
+                        )}
                         </div>
 
                      {backImageFile ?  <div className="back_image" id="back_images">
                           <p>Back</p>
                           <div className="back">
                             <label for="file-upload" className="custom-file-upload">+</label>
-                            <input  type="file" name="back_doc" onChange={(e) => setBackFile(e.target.files[0])}/>
+                            <input  type="file"   name="back_doc"  onChange={(e) => setBackFile(e.target.files[0])}/>
                             
                           </div>
-                          {/* <p>{backFile}</p> */}
+                         
+                          {errors.back_doc && (
+                            <span className="error invalid-feedback">{errors.back_doc}</span>
+                        )}
                         </div> : " "}
 
                         <div className="selfie_image">
                           <p>Selfie</p>
                           <div className="selfie">
                             <label for="file-upload" className="custom-file-upload">+</label>
-                            <input  type="file" name="selfie" onChange={(e) => setSelfieFile(e.target.files[0])}/>
+                            <input  type="file"   name="selfie"  onChange={(e) => setSelfieFile(e.target.files[0])}/>
                           
                           </div>
-                          {/* <p>{selfieFile}</p>  */}
+                         
+                          {errors.selfie && (
+                            <span className="error invalid-feedback">{errors.selfie}</span>
+                        )}
                         </div>
 
                       </div>
@@ -174,7 +192,7 @@ function KycApprove (){
                     <div className="kyc_verification_btn">
                       <button className='done_btn' type='submit' onClick={KycApprove}>Done</button>
                     </div>
-                   
+                    </form>
                   </div>
                 </div>
               </Col>
