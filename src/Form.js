@@ -247,7 +247,7 @@ const UpdateProfileForm = (callback, validate) => {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
- console.log("values",values);
+ 
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       callback();
@@ -285,8 +285,14 @@ const KycApproveForm = (callback, validate) => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  console.log("values12345", Object.values(values));
+// Iterate through the keys
+Object.keys(values).forEach(key => {
+  let value = values[key];
 
-  console.log("values",values);
+ console.log(`${key}: ${value}`);
+});
+ 
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       callback();

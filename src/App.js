@@ -34,7 +34,7 @@ function App() {
     <>
 
       {/* <Header /> */}
-      <BrowserRouter>
+      <BrowserRouter basename='/sliceLedger/developer/'>
       {/*<BrowserRouter basename='/sliceLedger/developer/'>*/}
 
       <Data>

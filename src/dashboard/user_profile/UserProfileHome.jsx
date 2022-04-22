@@ -9,9 +9,10 @@ import myContext from '../../context/MyContext'
 import { decryptData } from '../../Helper'
 import {BsCameraFill} from 'react-icons/bs'
 import { toast } from 'react-toastify'
-import validate from '../../validation/UpdateProfile'
-import { UpdateProfileForm } from '../../Form'
-
+// import validate from '../../validation/UpdateProfile'
+// import { UpdateProfileForm } from '../../Form'
+import axios from 'axios'
+import $ from 'jquery'
 
 export default function UserProfileHome() {
     const [isEdit, setIsEdit] = useState(false)
@@ -20,70 +21,105 @@ export default function UserProfileHome() {
     const accessToken =  localStorage.getItem('accessToken')
     const auth =  JSON.parse(localStorage.getItem('auth'));
     const [user, setUser] = useState([]);
-    const [profilePic, setProfilePic] = React.useState("");
-//    console.log(auth.bankAcount);
+   console.log("user",user)
+    const [first_name, setFirstName] = useState("")
+    const [last_name, setLastName] = useState("")
+    const [phone_number, setPhoneNumber] = useState("")
+    const [profilepic, setProfilePic] = useState()
+    const [previewPrfile, setPreProfilePic] = React.useState("")
+
    
-    
-    useEffect( () => {
-    userDetail()
+    console.log("first_name",first_name);
+    console.log("last_name",last_name);
+
+    console.log("phone_number",phone_number);
+
+    console.log("profilepic",profilepic);
+    console.log("previewPrfile",previewPrfile);
+
+
+     useEffect( () => {
+       userDetail()
     }, [])
 
     const handleEdit = ()=>{
         setIsEdit(true)
+       
     }
 
-    function handleProfilePic(event) {
-        setProfilePic(event.target.files[0]);
-         console.log(event.target.files[0])
-         setProfilePic(URL.createObjectURL(event.target.files[0]));
-    
-      }
-    function UpdateProfile(){
-        fetch("https://bharattoken.org/sliceLedger/admin/api/auth/updateProfile", {
+    useEffect(()=>{
+        $("#firstNameError").hide()
+        $("#lastNameError").hide()
+        $("#phoneNumberError").hide()
+    },[])
+
+   const validate = ()=>{
+        $("#firstNameError").hide()
+        $("#lastNameError").hide()
+        $("#phoneNumberError").hide()
+    }
+      async  function UpdateProfile(){
+        if(first_name===" "){
+            $("#firstNameError").show()
+            return
+          }
+          if(last_name === " "){
+            $("#lastNameError").show()
+            return
+          
+          }
+          if(phone_number ===" " ){
+            $("#phoneNumberError").show()
+            return
+          }
+         
+        const formData = new FormData();
+        formData.append("first_name",first_name);
+        formData.append("last_name", last_name);
+        formData.append("phoneNumber", phone_number);
+        formData.append("profilePic", profilepic, profilepic.name);
+        await  axios.post("https://bharattoken.org/sliceLedger/admin/api/auth/updateProfile",formData, {
             "method": "POST",
+            "mode":'cors',
             "headers": {
-                "content-type": "application/json",
-                "accept": "application/json",
-                "Authorization": accessToken
+                'Accept':'application/json',
+                'Content-Type':'multipart/form-data',
+                'Authorization':accessToken
             },
-            "body": JSON.stringify({
-                first_name:values.first_name,
-                last_name:values.last_name,
-                phoneNumber:values.phoneNumber,
-                profilePic:values.profilePic,
-             
-            })
-           
-           })
-          .then(response => response.json())
-          .then(response => {
-            const res  = decryptData(response);
-            console.log(res)
-            if (parseInt(res.status) === 200) {
-                toast.success(res.message)  
-                userDetail();
-                setIsEdit(false)
-             }else{
-                 toast.error(res.message)
-             }
-            if (parseInt(res.status) === 401) {
-                History('/login');
-            }
             
           })
+           .then(response => {
+             const res  = decryptData(response.data)
+            console.log(res)
+            if (parseInt(res.status) === 200) {
+              toast.success(res.message) 
+              setFirstName("")
+              setLastName("")
+              setPhoneNumber("")
+              setProfilePic("")
+              setPreProfilePic("") 
+              setIsEdit(false)
+              }else{
+                toast.error(res.message)
+            }
+          if (parseInt(res.status) === 401) {
+                History('/login');
+             }
+            })
           .catch(err => {
-            console.log(err);
+            const error  = decryptData(err.response.data)
+            if (parseInt(error.status) === 422) {
+              toast.error(error.message)
+               
+           }
+            console.log(error);
           });
+       
 
          
     }
 
-    const {
-        values,
-        errors,
-        handleChange,
-        handleSubmit
-      } = UpdateProfileForm(UpdateProfile, validate);
+  
 
     function userDetail() {
         fetch("https://bharattoken.org/sliceLedger/admin/api/auth/user", {
@@ -134,20 +170,24 @@ export default function UserProfileHome() {
                                             </Col>
                                             <Col lg={4} className="mt-3">
                                             <div className="edit_profile_img">
-                                            <Image src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" fluid />
+                                            {previewPrfile ? 
+                                            <Image  src={previewPrfile} fluid /> : <Image  src={user.profilePic} fluid  /> 
+                                            }
                                            <div class="wrapper">
                                                <div class="file-upload">
-                                                   <input type="file" name='profilePic' onChange={handleChange} id="profilePic"/>
+                                                   <input type="file" name='profilePic'  onChange={(e) => {
+                                                    setProfilePic(e.target.files[0]);
+                                                    setPreProfilePic(URL.createObjectURL(e.target.files[0]))
+                                                    }} />
                                                    <BsCameraFill />
                                                    
                                                </div>
-                                               <img src={profilePic} className="profilePic"/>
-                                           </div>
-                                       </div>
+                                              </div>
+                                            </div>
                                             </Col>
                                             
                                             <Col lg={8} className="mt-3">
-                                            <form onSubmit={handleSubmit} noValidate>
+                                           
                                                 <div className="personal_section">
                                                     <div className="person_info_title">
                                                         <h6>Personal Information</h6>
@@ -163,10 +203,8 @@ export default function UserProfileHome() {
                                                                     First Name
                                                                 </Form.Label>
                                                                 <Col sm="8">
-                                                                    <Form.Control type="text"  name='first_name' onChange={handleChange} value={ values.first_name == null ? user.first_name : values.first_name}  />
-                                                                    {errors.first_name && (
-                                                                        <span className="error invalid-feedback">{errors.first_name}</span>
-                                                                    )}
+                                                                    <Form.Control type="text"  name='first_name' onChange={(e) => setFirstName(e.target.value)}   value={ first_name == null ? user.first_name : first_name} onClick = {validate} />
+                                                                    <p className='errormsg' id='firstNameError' >First Name Field is Required</p>
                                                                 </Col>
                                                                 
                                                             </Form.Group>
@@ -176,10 +214,8 @@ export default function UserProfileHome() {
                                                                     Last Name
                                                                 </Form.Label>
                                                                 <Col sm="8">
-                                                                    <Form.Control type="text"  name='last_name' onChange={handleChange} value={ values.last_name == null ? user.last_name : values.last_name}/>
-                                                                    {errors.last_name && (
-                                                                        <span className="error invalid-feedback">{errors.last_name}</span>
-                                                                    )}   
+                                                                    <Form.Control type="text"  name='last_name' onChange={(e) => setLastName(e.target.value)} value={ last_name === " " ? user.last_name : last_name}  onClick = {validate}/>
+                                                                    <p className='errormsg' id='lastNameError'>Last Name Field is Required</p>
                                                                 </Col>
                                                             </Form.Group>
                                                             
@@ -198,10 +234,8 @@ export default function UserProfileHome() {
                                                                     Mobile No
                                                                 </Form.Label>
                                                                 <Col sm="8">
-                                                                    <Form.Control type="text"  name='phoneNumber' onChange={handleChange} value={values.phoneNumber == null ? user.phoneNumber : values.phoneNumber}/>
-                                                                    {errors.phoneNumber && (
-                                                                        <span className="error invalid-feedback">{errors.phoneNumber}</span>
-                                                                    )}
+                                                                    <Form.Control type="text"  name='phoneNumber' id='phoneNumber' onChange={(e) => setPhoneNumber(e.target.value)} value={ phone_number === " " ? user.phoneNumber : phone_number}  onClick = {validate}/>
+                                                                    <p className='errormsg' id='phoneNumberError'>Phone Number  Field is Required</p>
                                                                 </Col>
                                                             </Form.Group>
                                                             
@@ -214,7 +248,7 @@ export default function UserProfileHome() {
                                                     
                                                 </div>
     
-                                                </form>
+                                               
     
                                                 <div className="account_section">
                                                     <div className="account_info_title">
@@ -283,7 +317,7 @@ export default function UserProfileHome() {
                                              </Col>
                                              <Col lg={4} className="mt-3">
                                                  <div className="userProfile_img">
-                                                     <Image src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" fluid />
+                                                     <Image src={user.profilePic} fluid />
                                                  </div>
                                              </Col>
  

@@ -89,14 +89,7 @@ export default function SideNavbar() {
                                                                     <div className='title'><Link to='/user_profile'>My Profile</Link></div>
                                                                 </div>
                                                               </li>
-                                                              <li className={splitLocation[1] === "edit_user_profile" ? "active" : ""}>
-                                                              <div className='menu'>
-                                                                    <div className='menu_icon'>
-                                                                        <FontAwesomeIcon icon={faPenToSquare} />
-                                                                    </div>
-                                                                    <div className='title'><Link to='/edit_user_profile'>Edit Profile</Link></div>
-                                                                </div>
-                                                              </li>
+                                                            
                                                              <li className={splitLocation[1] === "account_details" ? "active" : ""}>
                                                              <div className='menu'>
                                                                     <div className='menu_icon'>

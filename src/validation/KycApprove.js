@@ -1,5 +1,9 @@
 export default function validate(values) {
-    console.log(values.doc_type);
+    // console.log("12345",Object.values(values));
+    // console.log("obj",Object.values.toString())
+  
+    // console.log("obj",Object.values)
+  
     let errors = {};
     if (!values.doc_type) {
       errors.doc_type = 'Please Select Your Document';
